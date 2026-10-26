@@ -1,0 +1,44 @@
+---
+import { languages, type Lang } from '@/i18n/ui'
+import { switchLangPath, useTranslations } from '@/i18n/utils'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const isHome = /^\/$|^\/es\/?$/.test(Astro.url.pathname)
+---
+
+<div class="lang-switch" role="group" aria-label={t('lang.label')}>
+  {
+    (Object.keys(languages) as Lang[]).map((lang) => (
+      <a
+        href={lang === locale ? Astro.url.pathname : switchLangPath(Astro.url.pathname, lang)}
+        hreflang={lang}
+        lang={lang}
+        aria-current={lang === locale ? 'true' : undefined}
+        aria-label={`${t('lang.switchTo')} ${languages[lang]}`}
+        data-lang-link
+        data-lang-home={isHome ? 'true' : 'false'}
+        data-base-path={lang === locale ? Astro.url.pathname : switchLangPath(Astro.url.pathname, lang)}
+      >
+        {lang.toUpperCase()}
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  const syncLanguageLinks = () => {
+    document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]').forEach((link) => {
+      if (link.dataset.langHome !== 'true') return
+      const base = link.dataset.basePath
+      if (base) link.href = `${base}${window.location.hash}`
+    })
+  }
+
+  syncLanguageLinks()
+  window.addEventListener('hashchange', syncLanguageLinks)
+</script>

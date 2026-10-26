@@ -1,0 +1,259 @@
+---
+import { Image } from 'astro:assets'
+import ArrowRight from '@/components/icons/ArrowRight.astro'
+import ArrowUpRight from '@/components/icons/ArrowUpRight.astro'
+import Layout from '@/layouts/Layout.astro'
+import { projects, researchDateLabel, type Project } from '@/data/projects'
+import { SITE } from '@/data/site'
+import {
+  alternatePaths,
+  casePath,
+  homePath,
+  useTranslations,
+} from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+
+const { locale, project } = Astro.props as { locale: Lang; project: Project }
+const t = useTranslations(locale)
+
+const index = projects.findIndex((item) => item.slug === project.slug)
+const nextProject = projects[(index + 1) % projects.length]
+const nextPath = casePath(locale, nextProject.slug)
+
+const pageTitle =
+  locale === 'es'
+    ? `${project.title} — Caso de estudio | ${SITE.name}`
+    : `${project.title} — Case study | ${SITE.name}`
+
+const stackKinds: Record<string, { en: string; es: string }> = {
+  Astro: { en: 'Framework', es: 'Framework' },
+  'Tailwind CSS': { en: 'Styling', es: 'Estilos' },
+  'Vanilla JavaScript': { en: 'Language', es: 'Lenguaje' },
+  Cloudflare: { en: 'Analytics', es: 'Analítica' },
+  'Vercel Analytics': { en: 'Analytics', es: 'Analítica' },
+  'IDX Addons': { en: 'Integration', es: 'Integración' },
+  'DM Sans Variable': { en: 'Typography', es: 'Tipografía' },
+  DoorDash: { en: 'Integration', es: 'Integración' },
+  'Google Maps Embed API': { en: 'Integration', es: 'Integración' },
+  'Deliverect Direct': { en: 'Integration', es: 'Integración' },
+  'VIP rewards platform': { en: 'Integration', es: 'Integración' },
+}
+---
+
+<Layout
+  locale={locale}
+  title={pageTitle}
+  description={project.summary[locale]}
+  path={casePath(locale, project.slug)}
+  image={project.image}
+  imageAlt={project.imageAlt[locale]}
+  type="article"
+  alternates={alternatePaths(project.slug)}
+>
+  <article>
+    <div class="container-page pt-10 md:pt-16">
+      <a href={`${homePath(locale)}#work`} class="link-arrow text-muted">
+        <span aria-hidden="true">←</span>
+        {t('case.back')}
+      </a>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-9">
+          <span class="chip chip-solid">{project.category[locale]}</span>
+          <h1 class="display-sm mt-5 max-w-[16ch] text-balance">{project.title}</h1>
+          <p class="mt-4 max-w-[52ch] text-base leading-relaxed text-muted sm:text-lg">
+            {project.tagline[locale]}
+          </p>
+        </div>
+        <div class="lg:col-span-3 lg:justify-self-end">
+          <a href={project.url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            {t('case.visit')}
+            <span class="sr-only">({t('work.openNewTab')})</span>
+            <ArrowUpRight class="size-4" />
+          </a>
+        </div>
+      </div>
+
+      <figure class="mt-10">
+        <div class="overflow-hidden rounded-[clamp(20px,2.2vw,28px)] border border-ink/10 bg-surface-2">
+          <Image
+            src={project.image}
+            alt={project.imageAlt[locale]}
+            widths={[640, 960, 1400]}
+            sizes="(max-width: 768px) 100vw, 1200px"
+            format="webp"
+            quality={82}
+            loading="eager"
+            fetchpriority="high"
+            class="aspect-[16/10] h-auto w-full object-cover object-top"
+          />
+        </div>
+        <figcaption class="mt-2 text-[0.7rem] text-muted">{t('case.capture')}</figcaption>
+      </figure>
+    </div>
+
+    <div class="container-page grid gap-10 py-14 md:py-20 lg:grid-cols-12 lg:gap-14">
+      <aside class="lg:col-span-4">
+        <div class="space-y-8">
+          <div class="card p-6">
+            <h2 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
+              {t('case.details')}
+            </h2>
+            <dl class="mt-4">
+              <div class="meta-row items-start border-t-0 pt-0">
+                <dt>{t('case.role')}</dt>
+                <dd class="max-w-[62%]">{project.role[locale]}</dd>
+              </div>
+              <div class="meta-row items-start">
+                <dt>{t('case.category')}</dt>
+                <dd>{project.category[locale]}</dd>
+              </div>
+              <div class="meta-row items-start">
+                <dt>{t('case.location')}</dt>
+                <dd>{project.location}</dd>
+              </div>
+              <div class="meta-row items-start">
+                <dt>{t('case.website')}</dt>
+                <dd>
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 underline decoration-ink/20 underline-offset-2 hover:text-accent">
+                    {new URL(project.url).hostname.replace(/^www\./, '')}
+                    <span class="sr-only">({t('work.openNewTab')})</span>
+                    <ArrowUpRight class="size-3" />
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <div>
+            <h2 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
+              {t('case.services')}
+            </h2>
+            <ul class="mt-4 flex flex-wrap gap-1.5">
+              {project.services.map((service) => <li class="chip">{service[locale]}</li>)}
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
+              {t('case.stack')}
+            </h2>
+            <ul class="mt-2">
+              {
+                project.stack.map((item) => (
+                  <li class="border-b border-ink/10 py-3 last:border-b-0">
+                    <div class="flex items-center gap-2">
+                      <span class="size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                      <span class="text-sm font-semibold tracking-[-0.01em]">{item.name}</span>
+                      <span class="ml-auto text-[0.55rem] font-semibold uppercase tracking-[0.1em] text-muted">
+                        {stackKinds[item.name]?.[locale]}
+                      </span>
+                    </div>
+                    <p class="mt-1 pl-3.5 text-[0.72rem] leading-relaxed text-muted">{item.note[locale]}</p>
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="mt-4 space-y-1.5">
+              <p class="text-[0.65rem] leading-relaxed text-muted">{project.informationStatus[locale]}</p>
+              <p class="text-[0.65rem] text-muted">{researchDateLabel[locale]}</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="prose-case space-y-12 lg:col-span-8">
+        <section>
+          <h2>{t('case.overview')}</h2>
+          <p class="mt-3">{project.overview[locale]}</p>
+        </section>
+
+        <section>
+          <h2>{t('case.challenge')}</h2>
+          <p class="mt-3">{project.challenge[locale]}</p>
+        </section>
+
+        <section>
+          <h2>{t('case.approach')}</h2>
+          <p class="mt-3">{project.approach[locale]}</p>
+          <h3 class="mt-8 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
+            {t('case.scope')}
+          </h3>
+          <ul class="mt-4">
+            {project.scope.map((item) => <li>{item[locale]}</li>)}
+          </ul>
+        </section>
+
+        <section>
+          <h2>{t('case.research')}</h2>
+          <ul class="mt-3">
+            {project.research.map((item) => <li>{item[locale]}</li>)}
+          </ul>
+
+          <div class="card mt-6 p-5 sm:p-6">
+            <h3 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
+              {t('case.verifiedLabel')}
+            </h3>
+            <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+              {
+                project.verifiedSignals.map((signal) => (
+                  <li class="flex items-start gap-2 text-[0.72rem] leading-snug text-muted">
+                    <span class="mt-1.5 size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                    {signal}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </section>
+
+        <section class="rounded-[clamp(18px,2vw,24px)] border border-ink/10 bg-surface-2 p-5 sm:p-6">
+          <h2>{t('case.limitations')}</h2>
+          <p class="mt-3">{project.limitations[locale]}</p>
+        </section>
+
+        <div class="flex flex-wrap items-center gap-3 border-t border-ink/10 pt-6">
+          <a href={project.url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            {t('case.visit')}
+            <span class="sr-only">({t('work.openNewTab')})</span>
+            <ArrowUpRight class="size-4" />
+          </a>
+          <a href={`${homePath(locale)}#work`} class="btn btn-secondary">
+            {t('case.all')}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <section class="border-t border-ink/10">
+      <div class="container-page py-12 md:py-16">
+        <a
+          href={nextPath}
+          class="card card-lift group grid gap-5 p-4 no-underline sm:grid-cols-[minmax(0,15rem)_1fr_auto] sm:items-center sm:p-5"
+        >
+          <div class="overflow-hidden rounded-2xl bg-surface-2">
+            <Image
+              src={nextProject.image}
+              alt={nextProject.imageAlt[locale]}
+              widths={[320, 640]}
+              sizes="(max-width: 640px) 100vw, 240px"
+              format="webp"
+              quality={78}
+              loading="lazy"
+              class="aspect-[16/10] h-auto w-full object-cover object-top"
+            />
+          </div>
+          <div>
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('case.next')}</p>
+            <h2 class="mt-2 text-xl font-semibold tracking-[-0.03em] text-ink">{nextProject.title}</h2>
+            <p class="mt-1 text-sm text-muted">{nextProject.tagline[locale]}</p>
+          </div>
+          <span class="flex size-11 items-center justify-center rounded-full border border-ink/15 text-ink transition-transform group-hover:translate-x-1">
+            <ArrowRight class="size-5" />
+          </span>
+        </a>
+      </div>
+    </section>
+  </article>
+</Layout>

@@ -1,20 +1,64 @@
----
- const personalImageAlt = "Yosber Guerrero"
+﻿---
+import ArrowUpRight from './icons/ArrowUpRight.astro'
+import SectionHeading from './SectionHeading.astro'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+import { SITE } from '@/data/site'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+
+const values = [
+  { title: t('about.value1Title'), text: t('about.value1Text') },
+  { title: t('about.value2Title'), text: t('about.value2Text') },
+  { title: t('about.value3Title'), text: t('about.value3Text') },
+  { title: t('about.value4Title'), text: t('about.value4Text') },
+]
 ---
 
-<article class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row">
-  <div
-    class="[&>p]:mb-4 [&>p>strong]:text-yellow-500 dark:[&>p>strong]:text-yellow-100 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty order-2 md:order-1"
-  >
-    <p>
-      Hey, I'm Yosber but people know me as Emmanuel. I started programming 5 years ago
-      but I consider myself an appasionate person about tech since I was a child.
-    </p>
+<section id="about" class="section-pad scroll-m-20 border-t border-ink/10">
+  <div class="container-page">
+    <SectionHeading eyebrow={t('about.eyebrow')} split={false}>
+      <h2 class="h2 max-w-[15ch] text-balance">{t('about.title')}</h2>
+    </SectionHeading>
 
-    <p>
-      Some things I'm happy I've done so far is create different projects helping people close to me. Also created an account on Instagram sharing some memes about programming and so far we are almost 3K! 🎊</p>
+    <div class="mt-8 grid gap-3 lg:grid-cols-12">
+      <article class="card col-span-12 p-6 sm:p-9 lg:col-span-7 lg:p-10">
+        <div class="max-w-[62ch] space-y-4 text-[0.95rem] leading-relaxed text-muted">
+          <p>{t('about.p1')}</p>
+          <p>{t('about.p2')}</p>
+          <p>{t('about.p3')}</p>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            {t('about.cta')}
+            <span class="sr-only">({t('work.openNewTab')})</span>
+            <ArrowUpRight class="size-4" />
+          </a>
+        </div>
+      </article>
+
+      <aside class="card-inverted card col-span-12 p-6 sm:p-9 lg:col-span-5 lg:p-10">
+        <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-bg/65">{t('about.valuesLabel')}</p>
+        <ol class="mt-6 divide-y divide-bg/10">
+          {values.map((value, index) => (
+            <li class="grid grid-cols-[2rem_1fr] gap-3 py-5 first:pt-0 last:pb-0">
+              <span class="pt-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-bg/65">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 class="text-base font-semibold tracking-[-0.02em] text-bg">{value.title}</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-bg/60">{value.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    </div>
   </div>
+</section>
 
-  <img width="200" height="200" src="/yosbergc.jpeg" alt={personalImageAlt} class="order-1 object-cover w-64 h-full p-1 md:order-2 rotate-3 lg:p-2 lg:w-64 aspect-square rounded-2xl bg-black/20 dark:bg-yellow-500/5 ring-1 ring-black/70 dark:ring-white/20 " style="object-position: 50% 50%">
-
-</article>

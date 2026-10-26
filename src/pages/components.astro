@@ -1,32 +1,69 @@
 ---
-import Badge from "@/components/Badge.astro"
-import SectionContainer from "@/components/SectionContainer.astro"
-import SocialPill from "@/components/SocialPill.astro"
-import LinkedInIcon from "@/components/icons/LinkedIn.astro"
-
-import Layout from "@/layouts/Layout.astro"
+import Layout from '@/layouts/Layout.astro'
+import MoonIcon from '@/components/icons/Moon.astro'
+import ArrowUpRight from '@/components/icons/ArrowUpRight.astro'
 ---
 
 <Layout
-  title="Design System porfolio.dev"
-  description="El catálogo de componentes de nuestro porfolio"
+  locale="en"
+  title="Design system — Yosber Guerrero"
+  description="Internal visual reference for the portfolio design system."
+  path="/components/"
+  noindex
+  alternates={{ en: '/', es: '/es/' }}
 >
-  <SectionContainer class="py-44 pb-32 flex flex-col gap-y-10">
-    <article class="mb-10">
-      <h1 class="mb-4 text-xl font-semibold">&lt;Badge /&gt;</h1>
+  <section class="container-page py-16 md:py-24">
+    <p class="eyebrow">Internal</p>
+    <h1 class="display-sm mt-5">Design system</h1>
+    <p class="mt-4 max-w-xl text-sm leading-relaxed text-muted">
+      A small reference for the components used across the portfolio. Not part of the public navigation.
+    </p>
 
-      <Badge>Disponible para trabajar</Badge>
-    </article>
+    <div class="mt-12 space-y-12">
+      <article class="border-t border-ink/10 pt-6">
+        <h2 class="text-lg font-semibold">&lt;Buttons /&gt;</h2>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <button class="btn btn-primary">Primary <ArrowUpRight class="size-4" /></button>
+          <button class="btn btn-secondary">Secondary <ArrowUpRight class="size-4" /></button>
+          <button class="btn btn-light">Light</button>
+          <button class="btn btn-ghost-light">Ghost light</button>
+        </div>
+      </article>
 
-    <article class="mb-10">
-      <h1 class="mb-4 text-xl font-semibold">&lt SocialPill /&gt;</h1>
+      <article class="border-t border-ink/10 pt-6">
+        <h2 class="text-lg font-semibold">&lt;Chips /&gt;</h2>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="chip">Default chip</span>
+          <span class="chip chip-solid">Solid chip</span>
+          <span class="chip">Astro</span>
+          <span class="chip">TypeScript</span>
+        </div>
+      </article>
 
-      <div class="flex">
-        <SocialPill href="https://linkedin.com/in/midudev">
-          <LinkedInIcon class="size-4 md:size-6" />
-          LinkedIn
-        </SocialPill>
-      </div>
-    </article>
-  </SectionContainer>
+      <article class="border-t border-ink/10 pt-6">
+        <h2 class="text-lg font-semibold">&lt;Cards /&gt;</h2>
+        <div class="mt-4 grid gap-3 md:grid-cols-3">
+          <div class="card p-6">
+            <p class="eyebrow">Card</p>
+            <p class="mt-4 text-sm text-muted">Surface card with border and soft shadow.</p>
+          </div>
+          <div class="card-inverted card p-6">
+            <p class="eyebrow">Inverted</p>
+            <p class="mt-4 text-sm text-bg/65">Inverted card for contrast moments.</p>
+          </div>
+          <div class="card card-lift p-6">
+            <p class="eyebrow">Lift</p>
+            <p class="mt-4 text-sm text-muted">Interactive card with hover elevation.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="border-t border-ink/10 pt-6">
+        <h2 class="text-lg font-semibold">&lt;Theme icon /&gt;</h2>
+        <div class="mt-4 flex gap-3">
+          <span class="icon-btn"><MoonIcon class="size-[18px]" /></span>
+        </div>
+      </article>
+    </div>
+  </section>
 </Layout>

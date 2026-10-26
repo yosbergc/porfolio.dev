@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow: string
+  description?: string
+  split?: boolean
+  class?: string
+}
+
+const { eyebrow, description, split = true, class: className = '' } = Astro.props
+---
+
+<header class={className}>
+  <p class="eyebrow">{eyebrow}</p>
+  <div class={split ? 'mt-5 grid gap-5 md:grid-cols-12 md:items-end md:gap-8' : 'mt-5'}>
+    <div class={split ? 'md:col-span-7' : ''}>
+      <slot />
+    </div>
+    {
+      description && (
+        <p class={split ? 'max-w-md text-sm leading-relaxed text-muted md:col-span-5 md:justify-self-end' : 'mt-4 max-w-xl text-sm leading-relaxed text-muted'}>
+          {description}
+        </p>
+      )
+    }
+  </div>
+</header>

@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets'
+import ArrowRight from './icons/ArrowRight.astro'
+import ArrowUpRight from './icons/ArrowUpRight.astro'
+import { casePath, useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+import type { Project } from '@/data/projects'
+
+interface Props {
+  project: Project
+  locale: Lang
+  class?: string
+  variant?: 'stacked' | 'overlay'
+  sizes?: string
+  loading?: 'eager' | 'lazy'
+}
+
+const {
+  project,
+  locale,
+  class: className = '',
+  variant = 'stacked',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 640px',
+  loading = 'lazy',
+} = Astro.props
+
+const t = useTranslations(locale)
+const href = casePath(locale, project.slug)
+const visibleStack = project.stack.slice(0, 3).map((item) => item.name)
+---
+
+{
+  variant === 'overlay' ? (
+    <article class={`card project-card group relative min-h-[440px] ${className}`}>
+      <Image
+        src={project.image}
+        alt={project.imageAlt[locale]}
+        widths={[480, 800, 1200]}
+        sizes={sizes}
+        format="webp"
+        quality={80}
+        loading={loading}
+        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+      />
+      <div class="overlay-shade absolute inset-0" aria-hidden="true" />
+      <div class="relative flex h-full min-h-[440px] flex-col justify-between p-6 text-white sm:p-8">
+        <div class="flex items-center justify-between gap-4">
+          <span class="chip chip-inverted">{project.category[locale]}</span>
+          {project.featured && <span class="chip chip-inverted">{t('work.featured')}</span>}
+        </div>
+        <div>
+          <h3 class="text-[1.7rem] font-semibold leading-tight tracking-[-0.035em]">
+            <a href={href} class="text-white no-underline decoration-white/30 underline-offset-4 hover:underline">
+              {project.title}
+            </a>
+          </h3>
+          <p class="mt-3 max-w-[38ch] text-sm leading-relaxed text-white/75">{project.tagline[locale]}</p>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            {visibleStack.map((item) => <span class="chip chip-inverted">{item}</span>)}
+          </div>
+          <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a href={href} class="link-arrow text-white hover:text-white">
+              {t('work.caseStudy')}
+              <ArrowRight class="size-4" />
+            </a>
+            <a href={project.url} target="_blank" rel="noopener noreferrer" class="link-arrow text-white/70 hover:text-white">
+              {t('work.visit')}
+              <span class="sr-only">({t('work.openNewTab')})</span>
+              <ArrowUpRight class="size-3.5" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  ) : (
+    <article class={`card card-lift project-card group flex flex-col ${className}`}>
+      <div class="project-media relative aspect-[16/10] overflow-hidden">
+        <Image
+          src={project.image}
+          alt={project.imageAlt[locale]}
+          widths={[480, 800, 1200]}
+          sizes={sizes}
+          format="webp"
+          quality={80}
+          loading={loading}
+          class="h-full w-full object-cover object-top"
+        />
+        <div class="absolute left-4 top-4 flex flex-wrap items-center gap-2">
+          <span class="rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[0.65rem] font-semibold text-white backdrop-blur-md">
+            {project.category[locale]}
+          </span>
+          {project.featured && (
+            <span class="rounded-full border border-white/20 bg-white/90 px-3 py-1.5 text-[0.65rem] font-semibold text-black">
+              {t('work.featured')}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div class="flex flex-1 flex-col p-5 sm:p-6">
+        <h3 class="text-xl font-semibold tracking-[-0.03em] sm:text-[1.4rem]">
+          <a href={href} class="text-ink no-underline decoration-ink/20 underline-offset-4 hover:underline">
+            {project.title}
+          </a>
+        </h3>
+        <p class="mt-2.5 text-sm leading-relaxed text-muted">{project.summary[locale]}</p>
+
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          {visibleStack.map((item) => <span class="chip">{item}</span>)}
+        </div>
+
+        <div class="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-ink/10 pt-4">
+          <a href={href} class="link-arrow">
+            {t('work.caseStudy')}
+            <ArrowRight class="size-4" />
+          </a>
+          <a href={project.url} target="_blank" rel="noopener noreferrer" class="link-arrow text-muted">
+            {t('work.visit')}
+            <span class="sr-only">({t('work.openNewTab')})</span>
+            <ArrowUpRight class="size-3.5" />
+          </a>
+        </div>
+      </div>
+    </article>
+  )
+}

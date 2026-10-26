@@ -1,51 +1,75 @@
 ---
-import ExperienceItem from "./ExperienceItem.astro"
-const EXPERIENCE = [
-  {
-    date: "Apr 2025 - Jun 2025",
-    title: "Frontend Developer with NextJS",
-    company: "Blue Panther",
-    description:
-      "Helping to fix bugs and implement new features for the website and mobile app with NextJS and Expo.",
-    link: "https://bluepanther.agency/",
-  },
-  {
-    date: 'Nov 2024 - Dec 2024',
-    title: 'Frontend Developer / Translator',
-    company: 'SMM World',
-    description: 'Resolved UI visual bugs and managed website localization by manually translating and structuring multi-language content within JSON files.',
-    link: 'https://www.smm-world.com/'
-  },
-  {
-    date: "Jun 2023 - May 2024",
-    title: "Frontend Developer",
-    company: "BoxNCase",
-    description:
-      "Redesigned the new UX on home, added new features with filter of products, optimized performance.",
-    link: 'https://www.boxncase.com/'
-  },
-  {
-    date: "Dec 2022 - Mar 2023",
-    title: 'PHP Frontend Developer / React Developer',
-    company: 'Bitterroot Valley Marketing',
-    description: 'Designed from scratch websites for the WordPress CMS and SPA with React.'
-  },
-  {
-    date: "Feb 2019 - Jan 2021",
-    title: 'WordPress Developer',
-    company: 'Volume99',
-    description: 'Designed from scratch the website of the marketing agency on WordPress, optimizing it for SEO.',
-    link: 'https://web.archive.org/web/20240415014826/https://volume99.com/'
-  }
-]
+import ArrowUpRight from './icons/ArrowUpRight.astro'
+import SectionHeading from './SectionHeading.astro'
+import { experience } from '@/data/experience'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
 ---
 
-<ol class="relative mt-16">
-  {
-    EXPERIENCE.map((experience) => (
-      <li class="">
-        <ExperienceItem {...experience} />
-      </li>
-    ))
-  }
-</ol>
+<section id="experience" class="section-pad scroll-m-20 border-t border-ink/10">
+  <div class="container-page grid gap-10 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-28">
+        <SectionHeading
+          eyebrow={t('experience.eyebrow')}
+          description={t('experience.description')}
+          split={false}
+          class="max-w-md"
+        >
+          <h2 class="h2 max-w-[12ch] text-balance">{t('experience.title')}</h2>
+        </SectionHeading>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8">
+      <ol>
+        {
+          experience.map((item) => (
+            <li class="timeline-item py-6 first:border-t-0 first:pt-0">
+              <div class="grid gap-3 md:grid-cols-[9.5rem_1fr] md:gap-8">
+                <div class="flex items-center gap-2 md:items-start">
+                  <p class="text-[0.72rem] font-medium tracking-[-0.01em] text-muted">{item.period[locale]}</p>
+                  {item.current && (
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-ink/10 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-muted">
+                      <span class="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+                      {t('experience.current')}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <h3 class="text-base font-semibold tracking-[-0.02em]">{item.title[locale]}</h3>
+                    <span class="text-sm text-muted">· {item.company}</span>
+                  </div>
+                  <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-muted">{item.description[locale]}</p>
+                  {
+                    item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="link-arrow mt-3 text-muted"
+                      >
+                        {t('experience.visit')}
+                        <span class="sr-only">({item.company} — {t('work.openNewTab')})</span>
+                        <ArrowUpRight class="size-3.5" />
+                      </a>
+                    )
+                  }
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

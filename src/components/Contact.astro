@@ -1,0 +1,55 @@
+﻿---
+import ArrowUpRight from './icons/ArrowUpRight.astro'
+import LinkedInIcon from './icons/LinkedIn.astro'
+import MailIcon from './icons/Mail.astro'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+import { SITE } from '@/data/site'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+---
+
+<section id="contact" class="scroll-m-20 pb-20 pt-4 md:pb-28">
+  <div class="container-page">
+    <div class="card-inverted relative overflow-hidden p-7 sm:p-10 md:p-14 lg:p-16">
+      <div class="pointer-events-none absolute -right-10 -top-10 hidden text-[18rem] font-semibold leading-none tracking-[-0.08em] text-bg/[0.04] md:block" aria-hidden="true">
+        YG
+      </div>
+
+      <div class="relative max-w-3xl">
+        <p class="eyebrow">{t('contact.eyebrow')}</p>
+        <h2 class="display-sm mt-6 max-w-[13ch] text-balance">{t('contact.title')}</h2>
+        <p class="mt-5 max-w-[54ch] text-sm leading-relaxed text-bg/65 sm:text-base">
+          {t('contact.description')}
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href={`mailto:${SITE.email}`} class="btn btn-light">
+            <MailIcon class="size-4" />
+            {t('contact.emailCta')}
+          </a>
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-ghost-light">
+            <LinkedInIcon class="size-4" />
+            {t('contact.linkedinCta')}
+            <span class="sr-only">({t('work.openNewTab')})</span>
+            <ArrowUpRight class="size-3.5" />
+          </a>
+        </div>
+
+        <div class="mt-10 flex flex-col gap-2 border-t border-bg/10 pt-5 text-[0.72rem] text-bg/65 sm:flex-row sm:items-center sm:justify-between">
+          <p>{SITE.email}</p>
+          <p class="inline-flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+            {t('contact.location')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

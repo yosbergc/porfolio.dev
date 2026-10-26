@@ -1,47 +1,110 @@
 ---
-const personalImageAlt = "Yosber Guerrero"
-import Badge from "@/components/Badge.astro"
-import LinkedInIcon from "@/components/icons/LinkedIn.astro"
-import MailIcon from "@/components/icons/Mail.astro"
-import SocialPill from "@/components/SocialPill.astro"
+import { Image } from 'astro:assets'
+import portrait from '@/assets/portrait.webp'
+import ArrowDown from './icons/ArrowDown.astro'
+import ArrowUpRight from './icons/ArrowUpRight.astro'
+import { useTranslations, sectionHref } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+
+const stack = ['Astro', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS']
 ---
 
-<div class="max-w-xl">
-  <div class="flex gap-4 mb-4">
-    <img
-      class="rounded-full shadow-lg size-16 object-cover"
-      src="/yosbergc.jpeg"
-      alt={personalImageAlt}
-    />
-    <a
-      href="https://www.linkedin.com/in/yosbergc/"
-      target="_blank"
-      rel="noopener"
-      class="flex items-center transition md:justify-center md:hover:scale-105"
-    >
-      <Badge>Available to work</Badge>
-    </a>
+<section class="container-page pb-16 pt-10 md:pb-20 md:pt-16">
+  <div class="bento">
+    <article class="card col-span-12 flex min-h-[460px] flex-col justify-between p-6 sm:p-9 lg:col-span-7 lg:p-12">
+      <div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span class="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-ink/[0.03] px-3 py-1.5 text-[0.7rem] font-semibold text-ink">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-40"></span>
+              <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent"></span>
+            </span>
+            {t('hero.availability')}
+          </span>
+          <span class="text-[0.7rem] font-medium text-muted">{t('hero.location')}</span>
+        </div>
+
+        <h1 class="display mt-9 max-w-[13ch] text-balance sm:mt-12">
+          {t('hero.titleBefore')}
+          <span class="serif-accent">{t('hero.titleAccent')}</span>
+          {t('hero.titleAfter')}
+        </h1>
+
+        <p class="mt-6 max-w-[46ch] text-[0.98rem] leading-relaxed text-muted sm:text-base">
+          {t('hero.description')}
+        </p>
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center gap-3">
+        <a href={sectionHref(locale, 'work')} class="btn btn-primary">
+          {t('hero.ctaWork')}
+          <ArrowDown class="size-4" />
+        </a>
+        <a href={sectionHref(locale, 'contact')} class="btn btn-secondary">
+          {t('hero.ctaContact')}
+          <ArrowUpRight class="size-4" />
+        </a>
+      </div>
+    </article>
+
+    <article class="card project-card relative col-span-12 min-h-[420px] overflow-hidden sm:col-span-6 lg:col-span-5 lg:min-h-[560px]">
+      <Image
+        src={portrait}
+        alt={t('hero.portraitAlt')}
+        widths={[480, 700, 840]}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px"
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover object-[50%_30%]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+        <p class="max-w-[22ch] text-xs font-medium leading-snug text-white/90">{t('hero.portraitCaption')}</p>
+        <a
+          href={sectionHref(locale, 'work')}
+          aria-label={t('hero.ctaWork')}
+          class="flex size-9 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+        >
+          <ArrowDown class="size-4" />
+        </a>
+      </div>
+    </article>
+
+    <article class="card col-span-12 p-5 sm:col-span-6 lg:col-span-7 lg:p-6">
+      <dl class="grid h-full gap-5 sm:grid-cols-3">
+        <div class="flex flex-col border-b border-ink/10 pb-4 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-4">
+          <dt class="order-2 mt-2 text-[0.7rem] leading-snug text-muted">{t('hero.stat1Label')}</dt>
+          <dd class="order-1 text-4xl font-semibold tracking-[-0.05em]">{t('hero.stat1Value')}</dd>
+        </div>
+        <div class="flex flex-col border-b border-ink/10 pb-4 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-4">
+          <dt class="order-2 mt-2 text-[0.7rem] leading-snug text-muted">{t('hero.stat2Label')}</dt>
+          <dd class="order-1 text-4xl font-semibold tracking-[-0.05em]">{t('hero.stat2Value')}</dd>
+        </div>
+        <div class="flex flex-col">
+          <dt class="order-2 mt-2 text-[0.7rem] leading-snug text-muted">{t('hero.stat3Label')}</dt>
+          <dd class="order-1 text-4xl font-semibold tracking-[-0.05em]">{t('hero.stat3Value')}</dd>
+        </div>
+      </dl>
+    </article>
+
+    <article class="card col-span-12 flex flex-col justify-center p-5 sm:col-span-6 lg:col-span-5 lg:p-6">
+      <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('hero.stackLabel')}</p>
+      <ul class="mt-4 flex flex-wrap gap-1.5">
+        {
+          stack.map((item) => (
+            <li class="chip chip-solid">{item}</li>
+          ))
+        }
+      </ul>
+    </article>
   </div>
-  <h1
-    class="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl dark:text-white"
-  >
-    Hey, I'm Yosber
-  </h1>
-  <p
-    class="mt-6 text-xl text-gray-800 dark:[&>strong]:text-yellow-200 [&>strong]:text-yellow-500 [&>strong]:font-semibold dark:text-gray-300"
-  >
-    +5 years of experience working as a<strong
-      > Frontend Developer and Programming Content Creator</strong
-    > from Venezuela. Creating web, desktop applications in my free time.
-  </p>
-  <nav class="flex flex-wrap gap-4 mt-8">
-    <SocialPill href="mailto:yosbergc2004@gmail.com">
-      <MailIcon class="size-4" />
-      Contact Me
-    </SocialPill>
-    <SocialPill href="https://www.linkedin.com/in/yosbergc/">
-      <LinkedInIcon class="size-4" />
-      LinkedIn
-    </SocialPill>
-  </nav>
-</div>
+</section>

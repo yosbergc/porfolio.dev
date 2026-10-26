@@ -1,0 +1,59 @@
+﻿---
+import SectionHeading from './SectionHeading.astro'
+import { capabilities } from '@/data/site'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+---
+
+<section id="capabilities" class="section-pad scroll-m-20 border-t border-ink/10">
+  <div class="container-page">
+    <SectionHeading eyebrow={t('capabilities.eyebrow')} description={t('capabilities.description')}>
+      <h2 class="h2 max-w-[15ch] text-balance">{t('capabilities.title')}</h2>
+    </SectionHeading>
+
+    <div class="bento mt-10 md:mt-14">
+      <article class="card col-span-12 p-6 sm:p-8 lg:col-span-5">
+        <h3 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('capabilities.coreLabel')}</h3>
+        <p class="mt-2 text-sm text-muted">{t('capabilities.coreText')}</p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {capabilities.core.map((item) => (
+            <li class="rounded-full bg-ink px-3.5 py-2 text-xs font-semibold text-bg">{item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="card col-span-12 p-6 sm:col-span-6 sm:p-8 lg:col-span-4">
+        <h3 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('capabilities.toolsLabel')}</h3>
+        <p class="mt-2 text-sm text-muted">{t('capabilities.toolsText')}</p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {capabilities.tools.map((item) => (
+            <li class="chip">{item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="card-inverted card col-span-12 p-6 sm:col-span-6 sm:p-8 lg:col-span-3">
+        <h3 class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-bg/65">{t('capabilities.craftLabel')}</h3>
+        <p class="mt-2 text-sm text-bg/65">{t('capabilities.craftText')}</p>
+        <ul class="mt-6 space-y-2.5">
+          {capabilities.craft.map((item) => (
+            <li class="flex items-start gap-2.5 text-xs leading-snug text-bg/80">
+              <span class="mt-1.5 size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
+
+    <p class="mt-5 text-[0.7rem] text-muted">{t('capabilities.note')}</p>
+  </div>
+</section>
+

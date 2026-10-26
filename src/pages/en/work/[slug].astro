@@ -1,0 +1,32 @@
+---
+import { projects, type Project } from '@/data/projects'
+import { casePath } from '@/i18n/utils'
+import { SITE } from '@/data/site'
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }))
+}
+
+const { project } = Astro.props as { project: Project }
+const target = casePath('en', project.slug)
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{project.title} — Yosber Guerrero</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={`${SITE.url}${target}`} />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <h1>{project.title}</h1>
+    <p><a href={target}>Continue to the case study</a></p>
+  </body>
+</html>

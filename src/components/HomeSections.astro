@@ -1,0 +1,24 @@
+---
+import Hero from '@/components/Hero.astro'
+import Work from '@/components/Work.astro'
+import Approach from '@/components/Approach.astro'
+import Experience from '@/components/Experience.astro'
+import Capabilities from '@/components/Capabilities.astro'
+import AboutMe from '@/components/AboutMe.astro'
+import Contact from '@/components/Contact.astro'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+---
+
+<Hero locale={locale} />
+<Experience locale={locale} />
+<Work locale={locale} />
+<Approach locale={locale} />
+<Capabilities locale={locale} />
+<AboutMe locale={locale} />
+<Contact locale={locale} />

@@ -1,0 +1,56 @@
+﻿---
+import SectionHeading from './SectionHeading.astro'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+
+const cards = [
+  { number: '01', title: t('approach.card1Title'), text: t('approach.card1Text') },
+  { number: '02', title: t('approach.card2Title'), text: t('approach.card2Text') },
+  { number: '03', title: t('approach.card3Title'), text: t('approach.card3Text') },
+  { number: '04', title: t('approach.card4Title'), text: t('approach.card4Text') },
+]
+---
+
+<section id="approach" class="section-pad scroll-m-20 border-t border-ink/10">
+  <div class="container-page">
+    <SectionHeading eyebrow={t('approach.eyebrow')} description={t('approach.description')}>
+      <h2 class="h2 max-w-[13ch] text-balance">{t('approach.title')}</h2>
+    </SectionHeading>
+
+    <div class="bento mt-10 md:mt-14">
+      {
+        cards.map((card, index) => (
+          <article
+            class={`card card-lift col-span-12 flex min-h-[220px] flex-col justify-between p-6 sm:p-8 ${
+              index === 0
+                ? 'card-inverted lg:col-span-7'
+                : index === 1
+                  ? 'lg:col-span-5'
+                  : index === 2
+                    ? 'lg:col-span-5'
+                    : 'lg:col-span-7'
+            }`}
+          >
+            <span class={`text-[0.68rem] font-semibold tracking-[0.16em] ${index === 0 ? 'text-bg/65' : 'text-muted'}`}>
+              {card.number}
+            </span>
+            <div class="mt-10">
+              <h3 class="text-xl font-semibold tracking-[-0.03em] sm:text-2xl">{card.title}</h3>
+              <p class={`mt-3 max-w-[48ch] text-sm leading-relaxed ${index === 0 ? 'text-bg/65' : 'text-muted'}`}>
+                {card.text}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+

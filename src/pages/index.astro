@@ -1,51 +1,18 @@
 ---
-import Layout from "@/layouts/Layout.astro"
+import HomeSections from '@/components/HomeSections.astro'
+import Layout from '@/layouts/Layout.astro'
+import { alternatePaths, useTranslations } from '@/i18n/utils'
 
-import AboutMe from "@/components/AboutMe.astro"
-import Briefcase from "@/components/icons/Briefcase.astro"
-import CodeIcon from "@/components/icons/Code.astro"
-import Experience from "@/components/Experience.astro"
-import ProfileCheck from "@/components/icons/ProfileCheck.astro"
-import Projects from "@/components/Projects.astro"
-import SectionContainer from "@/components/SectionContainer.astro"
-import Hero from "@/components/Hero.astro"
-import TitleSection from "@/components/TitleSection.astro"
+const locale = 'en' as const
+const t = useTranslations(locale)
 ---
 
 <Layout
-  title="Yosber Guerrero - Frontend Developer"
-  description="Frontend Developer experienced with NextJS, React and also backend technologies like NodeJS.."
+  locale={locale}
+  title={t('site.title')}
+  description={t('site.description')}
+  path="/"
+  alternates={alternatePaths()}
 >
-  <main class="px-4">
-    <SectionContainer class="py-16 md:py-36">
-      <Hero>
-      </slot>
-    </Hero>
-    </SectionContainer>
-    <div class="space-y-24">
-    <SectionContainer id="experiencia">
-      <TitleSection>
-        <Briefcase class="size-8" />
-        Experience
-      </TitleSection>
-      <Experience />
-    </SectionContainer>
-
-    <SectionContainer id="proyectos">
-      <TitleSection>
-        <CodeIcon class="size-7" />
-        Projects
-      </TitleSection>
-      <Projects />
-    </SectionContainer>
-
-    <SectionContainer id="sobre-mi">
-      <TitleSection>
-        <ProfileCheck class="size-8" />
-        About Me
-      </TitleSection>
-      <AboutMe />
-    </SectionContainer>
-  </div>
-  </main>
+  <HomeSections locale={locale} />
 </Layout>

@@ -1,0 +1,18 @@
+---
+import HomeSections from '@/components/HomeSections.astro'
+import Layout from '@/layouts/Layout.astro'
+import { alternatePaths, useTranslations } from '@/i18n/utils'
+
+const locale = 'es' as const
+const t = useTranslations(locale)
+---
+
+<Layout
+  locale={locale}
+  title={t('site.title')}
+  description={t('site.description')}
+  path="/es/"
+  alternates={alternatePaths()}
+>
+  <HomeSections locale={locale} />
+</Layout>

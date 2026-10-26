@@ -1,0 +1,39 @@
+---
+import ArrowRight from '@/components/icons/ArrowRight.astro'
+import Layout from '@/layouts/Layout.astro'
+
+const title = 'Page not found — Yosber Guerrero'
+const description = 'The page you are looking for does not exist or has moved.'
+---
+
+<Layout
+  locale="en"
+  title={title}
+  description={description}
+  path="/404/"
+  noindex
+  alternates={{ en: '/', es: '/es/' }}
+>
+  <section class="container-page flex min-h-[65vh] flex-col justify-center py-20">
+    <p class="eyebrow">404</p>
+    <h1 class="display-sm mt-6 max-w-[16ch] text-balance">This page took a wrong turn.</h1>
+    <p class="mt-5 max-w-xl text-base leading-relaxed text-muted">
+      The page you’re looking for doesn’t exist or has moved. The work is still here.
+    </p>
+    <p class="mt-2 max-w-xl text-sm leading-relaxed text-muted" lang="es">
+      La página que buscas no existe o cambió de lugar. El trabajo sigue aquí.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/" class="btn btn-primary">
+        Back to home
+        <ArrowRight class="size-4" />
+      </a>
+      <a href="/es/" class="btn btn-secondary" lang="es">
+        Ir al inicio en español
+      </a>
+      <a href="/#work" class="btn btn-secondary">
+        Browse selected work
+      </a>
+    </div>
+  </section>
+</Layout>
