@@ -23,6 +23,10 @@ export function casePath(lang: Lang, slug: string): string {
   return lang === 'es' ? `/es/proyectos/${slug}/` : `/work/${slug}/`
 }
 
+export function designPath(lang: Lang): string {
+  return lang === 'es' ? '/es/diseno/' : '/design/'
+}
+
 export function sectionHref(lang: Lang, section: string): string {
   return `${homePath(lang)}#${section}`
 }
@@ -30,7 +34,9 @@ export function sectionHref(lang: Lang, section: string): string {
 export function switchLangPath(pathname: string, target: Lang): string {
   const caseMatch = pathname.match(/^\/(?:en\/)?(?:work|proyectos)\/([^/]+)\/?$/)
   const esCaseMatch = pathname.match(/^\/es\/proyectos\/([^/]+)\/?$/)
+  const isDesign = pathname === '/design' || pathname === '/design/' || pathname === '/es/diseno' || pathname === '/es/diseno/'
 
+  if (isDesign) return designPath(target)
   if (esCaseMatch) return casePath(target, esCaseMatch[1])
   if (caseMatch) return casePath(target, caseMatch[1])
 
@@ -42,4 +48,8 @@ export function alternatePaths(slug?: string): Record<Lang, string> {
     return { en: homePath('en'), es: homePath('es') }
   }
   return { en: casePath('en', slug), es: casePath('es', slug) }
+}
+
+export function designAlternates(): Record<Lang, string> {
+  return { en: designPath('en'), es: designPath('es') }
 }

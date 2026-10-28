@@ -1,0 +1,80 @@
+---
+import ArrowRightIcon from './icons/ArrowRight.astro'
+import DesignCard from './DesignCard.astro'
+import DesignLightbox from './DesignLightbox.astro'
+import SectionHeading from './SectionHeading.astro'
+import { getFeaturedDesigns } from '@/lib/designs'
+import { designPath, useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const designs = getFeaturedDesigns(6)
+---
+
+{
+  designs.length > 0 && (
+    <>
+      <section id="design" class="section-pad scroll-m-20 border-t border-ink/10">
+        <div class="container-page">
+          <SectionHeading
+            eyebrow={t('design.teaserEyebrow')}
+            description={t('design.teaserDescription')}
+          >
+            <h2 class="h2 max-w-[14ch] text-balance">{t('design.teaserTitle')}</h2>
+          </SectionHeading>
+
+          <div class="teaser-masonry mt-10 md:mt-14">
+            {designs.map((design) => (
+              <div
+                class="teaser-item"
+                data-design-item
+                data-orientation={design.orientation}
+                data-category={design.category}
+              >
+                <DesignCard
+                  design={design}
+                  locale={locale}
+                  compact
+                  loading="lazy"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 360px"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a href={designPath(locale)} class="btn btn-secondary">
+              {t('design.viewAll')}
+              <ArrowRightIcon class="size-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <DesignLightbox locale={locale} designs={designs} />
+    </>
+  )
+}
+
+<style>
+  .teaser-masonry {
+    columns: 2;
+    column-gap: clamp(0.65rem, 1.2vw, 1rem);
+  }
+
+  .teaser-item {
+    margin-bottom: clamp(0.65rem, 1.2vw, 1rem);
+    break-inside: avoid;
+  }
+
+  @media (min-width: 1024px) {
+    .teaser-masonry {
+      columns: 3;
+    }
+  }
+</style>

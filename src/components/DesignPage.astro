@@ -1,0 +1,52 @@
+---
+import DesignGallery from './DesignGallery.astro'
+import DesignLightbox from './DesignLightbox.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getVisibleDesigns } from '@/lib/designs'
+import {
+  designAlternates,
+  designPath,
+  homePath,
+  useTranslations,
+} from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+
+interface Props {
+  locale: Lang
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const designs = getVisibleDesigns()
+---
+
+<Layout
+  locale={locale}
+  title={t('design.pageTitle')}
+  description={t('design.pageDescription')}
+  path={designPath(locale)}
+  alternates={designAlternates()}
+>
+  <section class="container-page pt-10 md:pt-16">
+    <a href={`${homePath(locale)}#work`} class="link-arrow text-muted">
+      <span aria-hidden="true">←</span>
+      {t('design.backToWork')}
+    </a>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">{t('design.eyebrow')}</p>
+        <h1 class="display-sm mt-5 max-w-[16ch] text-balance">{t('design.title')}</h1>
+      </div>
+      <p class="max-w-md text-sm leading-relaxed text-muted lg:col-span-5 lg:justify-self-end">
+        {t('design.description')}
+      </p>
+    </div>
+  </section>
+
+  <div class="mt-10 md:mt-14">
+    <DesignGallery locale={locale} designs={designs} />
+  </div>
+
+  <DesignLightbox locale={locale} designs={designs} />
+</Layout>

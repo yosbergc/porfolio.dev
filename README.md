@@ -1,6 +1,6 @@
 # Yosber Guerrero — Portfolio
 
-Personal portfolio for Yosber Guerrero, full stack developer and programming content creator. The site is a bilingual (English/Spanish) editorial portfolio built around a responsive bento grid, real client screenshots and project case studies.
+Personal portfolio for Yosber Guerrero, full stack developer, graphic designer and programming content creator. The site is a bilingual (English/Spanish) editorial portfolio built around a responsive bento grid, real client screenshots, project case studies and a graphic design gallery.
 
 ## Stack
 
@@ -10,18 +10,20 @@ Personal portfolio for Yosber Guerrero, full stack developer and programming con
 - **Typed data modules** for projects, experience and side projects (no CMS or content collections required)
 - **Astro i18n routing** with English at `/` and Spanish at `/es/`
 - **@fontsource-variable/onest** for the variable typeface
-- **sharp** for Astro image optimization (direct dependency required by Astro’s image service)
+- **sharp** for Astro image optimization and design thumbnails
+- **ffmpeg/ffprobe** (optional, system) for video posters and optimized previews
 
 ## Commands
 
 ```sh
 pnpm install
-pnpm dev        # local development
-pnpm build      # astro check + astro build
-pnpm preview    # preview the production build
+pnpm designs:sync   # regenerate the design catalog and derivatives
+pnpm dev            # sync designs + local development
+pnpm build          # sync designs + astro check + astro build
+pnpm preview        # preview the production build
 ```
 
-There are no separate lint or test scripts in the repository. The `build` script runs `astro check` before generating the site.
+There are no separate lint or test scripts in the repository. The `build` script runs `astro check` before generating the site. `dev` starts a watcher that re-syncs the catalog when files are added to or removed from `public/Portfolio/`.
 
 ## Routes
 
@@ -31,6 +33,8 @@ There are no separate lint or test scripts in the repository. The `build` script
 | `/es/` | Spanish home |
 | `/work/[slug]/` | English project case study |
 | `/es/proyectos/[slug]/` | Spanish project case study |
+| `/design/` | English graphic design gallery |
+| `/es/diseno/` | Spanish graphic design gallery |
 | `/en/` | Legacy redirect to `/` |
 | `/en/work/[slug]/` | Legacy redirect to `/work/[slug]/` |
 | `/sitemap.xml` | Generated sitemap with localized alternates |
@@ -41,14 +45,21 @@ There are no separate lint or test scripts in the repository. The `build` script
 ## Structure
 
 ```text
+scripts/
+  sync-designs.mjs         Scans public/Portfolio, creates derivatives and the catalog
+  design-watcher.mjs       Re-syncs the catalog during development
 src/
-  assets/                  Portrait and real project screenshots
-  components/              Layout sections and UI primitives
+  assets/                  Portrait, project screenshots and generated design thumbnails
+  components/              Layout sections, gallery components and UI primitives
   data/
     projects.ts            Six featured projects with localized case-study content
     otherProjects.ts       Existing side projects preserved from the original portfolio
     experience.ts          Work history, localized
     site.ts                Contact links, social profiles and capability groups
+    designs.ts             Manual design metadata overrides
+    designs.generated.ts   Generated design catalog (ignored by Git)
+  lib/
+    designs.ts             Merges generated files with manual metadata
   i18n/
     ui.ts                  Centralized English/Spanish interface strings
     utils.ts               Locale helpers and localized route builders
@@ -59,6 +70,8 @@ src/
     es/index.astro         Spanish home
     work/[slug].astro      English case study
     es/proyectos/[slug].astro
+    design/index.astro     English design gallery
+    es/diseno/index.astro  Spanish design gallery
     en/                    Legacy redirects
     sitemap.xml.ts
   styles/
@@ -73,10 +86,49 @@ The language switcher keeps the equivalent page:
 
 - Home: `/` ↔ `/es/`
 - Case studies: `/work/[slug]/` ↔ `/es/proyectos/[slug]/`
+- Design gallery: `/design/` ↔ `/es/diseno/`
 - On the home page, the current hash is preserved when switching languages.
 - Legacy `/en/...` URLs redirect to the unprefixed English routes.
 
 Each page renders its own `lang`, canonical URL and `hreflang` alternates for English, Spanish and `x-default`. The sitemap also includes the localized alternates.
+
+## Graphic design gallery
+
+Originals live in `public/Portfolio/`, including subfolders and files with spaces or special characters. They are never renamed, moved or overwritten. To add a new piece:
+
+1. Copy the image or video into `public/Portfolio/` or a subfolder.
+2. Run `pnpm designs:sync`, or let `pnpm dev` do it automatically.
+3. Optionally add metadata in `src/data/designs.ts`.
+
+The sync script:
+
+- Detects images and videos recursively.
+- Reads real dimensions with `sharp` and `ffprobe`.
+- Generates WebP thumbnails and best-frame video posters in `src/assets/designs/`.
+- Generates 720p MP4 previews in `public/designs/videos/` when `ffmpeg` is available.
+- Writes the typed catalog to `src/data/designs.generated.ts`.
+- Leaves the originals untouched.
+
+Generated files are ignored by Git because they are rebuilt automatically. `public/Portfolio/` itself must be tracked for the gallery to work in production.
+
+Manual metadata is keyed by the file path relative to `public/Portfolio/`:
+
+```ts
+export const designOverrides = {
+  'Carrousel/Artboard 1.png': {
+    title: { en: 'Custom title', es: 'Título personalizado' },
+    description: { en: 'Short description', es: 'Descripción breve' },
+    alt: { en: 'Accessible description', es: 'Descripción accesible' },
+    category: 'social',
+    year: '2026',
+    order: 1,
+    featured: true,
+    hidden: false,
+  },
+}
+```
+
+Available categories: `branding`, `flyers`, `social`, `advertising`, `editorial` and `other`. Without metadata, the gallery uses neutral defaults derived from the filename and does not invent clients, dates or results. `hidden` removes a piece from the gallery without deleting the file. `featured` controls the home selection; `order` controls manual sorting.
 
 ## Content and research notes
 

@@ -4,6 +4,11 @@ dist/
 # generated types
 .astro/
 
+# generated design assets and catalog
+src/assets/designs/
+src/data/designs.generated.ts
+public/designs/
+
 # dependencies
 node_modules/
 

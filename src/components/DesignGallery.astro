@@ -1,0 +1,290 @@
+---
+import DesignCard from './DesignCard.astro'
+import type { DesignCategory } from '@/data/designs'
+import { getAvailableCategories, type Design } from '@/lib/designs'
+import type { Lang, UIKey } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
+
+interface Props {
+  locale: Lang
+  designs: Design[]
+  pageSize?: number
+}
+
+const { locale, designs, pageSize = 12 } = Astro.props
+const t = useTranslations(locale)
+const categories = getAvailableCategories(designs)
+
+const formatFilters = [
+  { value: 'all', label: t('design.filter.all') },
+  { value: 'vertical', label: t('design.filter.vertical') },
+  { value: 'horizontal', label: t('design.filter.horizontal') },
+  { value: 'square', label: t('design.filter.other') },
+] as const
+
+const categoryKeys: Record<Exclude<DesignCategory, 'other'>, UIKey> = {
+  branding: 'design.category.branding',
+  flyers: 'design.category.flyers',
+  social: 'design.category.social',
+  advertising: 'design.category.advertising',
+  editorial: 'design.category.editorial',
+}
+
+const initialVisible = Math.min(pageSize, designs.length)
+const initialStatus = t('design.showing')
+  .replace('{shown}', String(initialVisible))
+  .replace('{total}', String(designs.length))
+---
+
+<div class="container-page pb-20 md:pb-28">
+  <div class="border-y border-ink/10 py-5" data-design-filters>
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2" role="group" aria-label={t('design.filter.formatLabel')}>
+          <span class="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('design.filter.formatLabel')}</span>
+          <div class="flex flex-wrap gap-2">
+            {
+              formatFilters.map((filter) => (
+                <button
+                  type="button"
+                  class="filter-pill"
+                  data-filter-group="format"
+                  data-filter-value={filter.value}
+                  aria-pressed={filter.value === 'all' ? 'true' : 'false'}
+                >
+                  {filter.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        {
+          categories.length > 0 && (
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2" role="group" aria-label={t('design.filter.categoryLabel')}>
+              <span class="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted">{t('design.filter.categoryLabel')}</span>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="filter-pill" data-filter-group="category" data-filter-value="all" aria-pressed="true">
+                  {t('design.filter.all')}
+                </button>
+                {categories.map((category) => (
+                  <button
+                    type="button"
+                    class="filter-pill"
+                    data-filter-group="category"
+                    data-filter-value={category}
+                    aria-pressed="false"
+                  >
+                    {t(categoryKeys[category])}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </div>
+
+      <p
+        class="text-xs text-muted"
+        data-gallery-status
+        data-template={t('design.showing')}
+        data-empty={t('design.empty')}
+        aria-live="polite"
+      >
+        {initialStatus}
+      </p>
+    </div>
+  </div>
+
+  <div class="design-masonry mt-6 md:mt-8" data-design-gallery data-page-size={pageSize}>
+    {
+      designs.map((design, index) => (
+        <div
+          class="design-item"
+          data-design-item
+          data-orientation={design.orientation}
+          data-category={design.category}
+          hidden={index >= pageSize}
+        >
+          <DesignCard
+            design={design}
+            locale={locale}
+            loading={index < 3 ? 'eager' : 'lazy'}
+            fetchpriority={index < 3 ? 'high' : 'auto'}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-8 flex justify-center">
+    <button type="button" class="btn btn-secondary" data-load-more hidden>
+      {t('design.loadMore')}
+      <span data-load-more-count class="text-muted"></span>
+    </button>
+  </div>
+
+  <noscript>
+    <style>
+      [data-design-item][hidden] {
+        display: block !important;
+      }
+
+      [data-design-filters],
+      [data-gallery-status] {
+        display: none !important;
+      }
+    </style>
+  </noscript>
+</div>
+
+<style>
+  .design-masonry {
+    columns: 1;
+    column-gap: clamp(0.8rem, 1.45vw, 1.15rem);
+  }
+
+  .design-item {
+    margin-bottom: clamp(0.8rem, 1.45vw, 1.15rem);
+    break-inside: avoid;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(var(--ink) / 0.12);
+    border-radius: 999px;
+    padding: 0.48rem 0.85rem;
+    background: transparent;
+    color: rgb(var(--muted));
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .filter-pill:hover {
+    border-color: rgb(var(--ink) / 0.24);
+    background: rgb(var(--ink) / 0.05);
+    color: rgb(var(--ink));
+  }
+
+  .filter-pill[aria-pressed='true'] {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--bg));
+  }
+
+  @media (min-width: 640px) {
+    .design-masonry {
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .design-masonry {
+      columns: 3;
+    }
+  }
+</style>
+
+<script>
+  const gallery = document.querySelector<HTMLElement>('[data-design-gallery]')
+  const status = document.querySelector<HTMLElement>('[data-gallery-status]')
+  const loadMoreButton = document.querySelector<HTMLButtonElement>('[data-load-more]')
+
+  if (gallery) {
+    const items = Array.from(gallery.querySelectorAll<HTMLElement>('[data-design-item]'))
+    const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter-group]'))
+    const pageSize = Number(gallery.dataset.pageSize) || 12
+    const state = new Map<string, string>()
+    let visibleCount = pageSize
+
+    for (const filter of filters) {
+      const group = filter.dataset.filterGroup
+      if (group && !state.has(group)) state.set(group, 'all')
+    }
+
+    const updateStatus = (shown: number, total: number) => {
+      if (!status) return
+      if (total === 0) {
+        status.textContent = status.dataset.empty ?? ''
+        return
+      }
+      const template = status.dataset.template ?? ''
+      status.textContent = template
+        .replace('{shown}', String(shown))
+        .replace('{total}', String(total))
+    }
+
+    const updateLoadMore = (shown: number, total: number) => {
+      if (!loadMoreButton) return
+      const remaining = Math.max(total - shown, 0)
+      loadMoreButton.hidden = remaining === 0
+      const count = loadMoreButton.querySelector<HTMLElement>('[data-load-more-count]')
+      if (count) count.textContent = remaining > 0 ? `(${remaining})` : ''
+    }
+
+    const getMatchedItems = () => {
+      const format = state.get('format') ?? 'all'
+      const category = state.get('category') ?? 'all'
+
+      return items.filter((item) => {
+        const matchesFormat = format === 'all' || item.dataset.orientation === format
+        const matchesCategory = category === 'all' || item.dataset.category === category
+        return matchesFormat && matchesCategory
+      })
+    }
+
+    const applyVisibility = () => {
+      const matched = getMatchedItems()
+      const shown = Math.min(visibleCount, matched.length)
+      const shownSet = new Set(matched.slice(0, shown))
+
+      for (const item of items) {
+        item.hidden = !shownSet.has(item)
+      }
+
+      updateStatus(shown, matched.length)
+      updateLoadMore(shown, matched.length)
+    }
+
+    const applyFilters = () => {
+      visibleCount = pageSize
+      applyVisibility()
+    }
+
+    for (const filter of filters) {
+      filter.addEventListener('click', () => {
+        const group = filter.dataset.filterGroup
+        const value = filter.dataset.filterValue
+        if (!group || !value) return
+
+        state.set(group, value)
+
+        for (const candidate of filters) {
+          if (candidate.dataset.filterGroup !== group) continue
+          candidate.setAttribute(
+            'aria-pressed',
+            candidate.dataset.filterValue === value ? 'true' : 'false',
+          )
+        }
+
+        applyFilters()
+      })
+    }
+
+    loadMoreButton?.addEventListener('click', () => {
+      visibleCount += pageSize
+      applyVisibility()
+    })
+
+    applyVisibility()
+  }
+</script>

@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { projects } from '@/data/projects'
 import { SITE } from '@/data/site'
-import { casePath, homePath } from '@/i18n/utils'
+import { casePath, designAlternates, designPath, homePath } from '@/i18n/utils'
 import type { Lang } from '@/i18n/ui'
 
 export const prerender = true
@@ -22,6 +22,10 @@ export const GET: APIRoute = () => {
 
   for (const lang of languages) {
     entries.push(urlEntry(homePath(lang), { en: homePath('en'), es: homePath('es') }))
+  }
+
+  for (const lang of languages) {
+    entries.push(urlEntry(designPath(lang), designAlternates()))
   }
 
   for (const project of projects) {

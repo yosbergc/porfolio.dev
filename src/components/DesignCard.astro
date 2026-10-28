@@ -1,0 +1,132 @@
+---
+import { Image } from 'astro:assets'
+
+import PlayIcon from './icons/Play.astro'
+import type { DesignCategory } from '@/data/designs'
+import type { Design } from '@/lib/designs'
+import type { Lang, UIKey } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
+
+interface Props {
+  design: Design
+  locale: Lang
+  class?: string
+  sizes?: string
+  loading?: 'eager' | 'lazy'
+  fetchpriority?: 'high' | 'low' | 'auto'
+  compact?: boolean
+}
+
+const {
+  design,
+  locale,
+  class: className = '',
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  compact = false,
+} = Astro.props
+
+const t = useTranslations(locale)
+
+const categoryKeys: Record<DesignCategory, UIKey> = {
+  branding: 'design.category.branding',
+  flyers: 'design.category.flyers',
+  social: 'design.category.social',
+  advertising: 'design.category.advertising',
+  editorial: 'design.category.editorial',
+  other: 'design.category.other',
+}
+
+const formatLabel =
+  design.orientation === 'vertical'
+    ? t('design.filter.vertical')
+    : design.orientation === 'horizontal'
+      ? t('design.filter.horizontal')
+      : t('design.filter.other')
+
+const ariaLabel = `${design.title[locale]} — ${t('design.viewPiece')}`
+---
+
+<a
+  href={design.originalUrl}
+  class:list={[
+    'design-card card card-lift group flex h-full flex-col overflow-hidden no-underline',
+    compact && 'design-card--compact',
+    className,
+  ]}
+  aria-label={ariaLabel}
+  data-design-card
+  data-design-id={design.id}
+>
+  <div
+    class="design-media relative w-full overflow-hidden bg-surface-2"
+    style={`aspect-ratio: ${design.width} / ${design.height};`}
+  >
+    {
+      design.thumb ? (
+        <Image
+          src={design.thumb}
+          alt={design.alt[locale]}
+          widths={[320, 480, 800, 1200]}
+          sizes={sizes}
+          format="webp"
+          quality={80}
+          loading={loading}
+          fetchpriority={fetchpriority}
+          decoding="async"
+          class="h-full w-full object-contain"
+        />
+      ) : design.mediaType === 'image' ? (
+        <img
+          src={design.originalUrl}
+          alt={design.alt[locale]}
+          width={design.width}
+          height={design.height}
+          loading={loading}
+          decoding="async"
+          class="h-full w-full object-contain"
+        />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center bg-ink/90 text-bg/70">
+          <PlayIcon class="size-8" />
+        </div>
+      )
+    }
+
+    {
+      design.mediaType === 'video' && (
+        <span class="design-play pointer-events-none absolute inset-0 grid place-items-center">
+          <span class="flex size-12 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur-md transition-transform duration-300 ease-out group-hover:scale-105">
+            <PlayIcon class="ml-0.5 size-4" />
+          </span>
+        </span>
+      )
+    }
+  </div>
+
+  <div class:list={['flex flex-1 flex-col', compact ? 'p-3' : 'p-4 sm:p-5']}>
+    <h3
+      class:list={[
+        'font-semibold tracking-[-0.02em] text-ink decoration-ink/20 underline-offset-4 group-hover:underline',
+        compact ? 'text-[0.82rem] leading-snug' : 'text-[0.98rem] leading-snug',
+      ]}
+    >
+      {design.title[locale]}
+    </h3>
+
+    <div class:list={['flex flex-wrap gap-1.5', compact ? 'mt-2' : 'mt-3']}>
+      {
+        design.mediaType === 'video' && (
+          <span class="chip chip-solid">{t('design.media.video')}</span>
+        )
+      }
+      {
+        design.category !== 'other' && (
+          <span class="chip">{t(categoryKeys[design.category])}</span>
+        )
+      }
+      {!compact && <span class="chip">{formatLabel}</span>}
+    </div>
+  </div>
+</a>

@@ -1,0 +1,419 @@
+---
+import ChevronLeftIcon from './icons/ChevronLeft.astro'
+import ChevronRightIcon from './icons/ChevronRight.astro'
+import CloseIcon from './icons/Close.astro'
+import type { Design } from '@/lib/designs'
+import type { Lang } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
+
+interface Props {
+  locale: Lang
+  designs: Design[]
+}
+
+const { locale, designs } = Astro.props
+const t = useTranslations(locale)
+
+const lightboxData = designs.map((design) => ({
+  id: design.id,
+  title: design.title[locale],
+  description: design.description[locale],
+  alt: design.alt[locale],
+  mediaType: design.mediaType,
+  originalUrl: design.originalUrl,
+  playbackUrl: design.playbackUrl,
+  thumbUrl: design.thumb?.src ?? '',
+  width: design.width,
+  height: design.height,
+}))
+
+const serializedData = JSON.stringify(lightboxData).replace(/</g, '\\u003c')
+---
+
+<script type="application/json" data-design-lightbox-data set:html={serializedData}></script>
+
+<dialog
+  class="design-lightbox"
+  data-design-lightbox
+  aria-labelledby="design-lightbox-title"
+  aria-describedby="design-lightbox-description"
+>
+  <div class="design-lightbox__panel">
+    <header class="flex items-start justify-between gap-4 border-b border-ink/10 px-5 py-4 sm:px-6">
+      <div class="min-w-0">
+        <p class="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted" data-lightbox-counter></p>
+        <h2 id="design-lightbox-title" class="mt-1 truncate text-lg font-semibold tracking-[-0.03em] sm:text-xl" data-lightbox-title></h2>
+        <p class="sr-only" data-lightbox-status aria-live="polite"></p>
+      </div>
+      <button type="button" class="icon-btn shrink-0" data-lightbox-close aria-label={t('design.lightbox.close')}>
+        <CloseIcon class="size-[18px]" />
+      </button>
+    </header>
+
+    <div class="design-lightbox__stage" data-lightbox-stage>
+      <p class="design-lightbox__loading" data-lightbox-loading>{t('design.lightbox.loading')}</p>
+      <img class="design-lightbox__media" data-lightbox-preview alt="" aria-hidden="true" hidden />
+      <img class="design-lightbox__media" data-lightbox-image alt="" hidden />
+      <video class="design-lightbox__media" data-lightbox-video controls playsinline preload="none" hidden></video>
+    </div>
+
+    <footer class="flex flex-col gap-4 border-t border-ink/10 px-5 py-4 sm:px-6">
+      <p id="design-lightbox-description" class="max-h-24 overflow-y-auto text-sm leading-relaxed text-muted" data-lightbox-description></p>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-arrow text-muted"
+          data-lightbox-original
+          data-original-label={t('design.lightbox.original')}
+        >
+          {t('design.lightbox.original')}
+          <span class="sr-only">({t('work.openNewTab')})</span>
+        </a>
+
+        <div class="flex items-center gap-2">
+          <button type="button" class="icon-btn" data-lightbox-prev aria-label={t('design.lightbox.prev')}>
+            <ChevronLeftIcon class="size-[18px]" />
+          </button>
+          <button type="button" class="icon-btn" data-lightbox-next aria-label={t('design.lightbox.next')}>
+            <ChevronRightIcon class="size-[18px]" />
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+</dialog>
+
+<style>
+  .design-lightbox {
+    width: min(1180px, calc(100vw - 1.5rem));
+    max-width: none;
+    max-height: calc(100dvh - 1.5rem);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgb(var(--ink));
+  }
+
+  .design-lightbox::backdrop {
+    background: rgb(8 8 8 / 0.82);
+    backdrop-filter: blur(10px);
+  }
+
+  .design-lightbox__panel {
+    display: flex;
+    max-height: calc(100dvh - 1.5rem);
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgb(var(--ink) / 0.12);
+    border-radius: clamp(20px, 2.2vw, 28px);
+    background: rgb(var(--surface));
+    box-shadow: 0 40px 100px -40px rgb(0 0 0 / 0.65);
+  }
+
+  .design-lightbox__stage {
+    position: relative;
+    display: grid;
+    min-height: clamp(12rem, 40dvh, 38rem);
+    max-height: min(72dvh, 50rem);
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+    background: rgb(8 8 8 / 0.96);
+  }
+
+  .design-lightbox__media {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: min(72dvh, 50rem);
+    object-fit: contain;
+  }
+
+  video.design-lightbox__media {
+    width: 100%;
+  }
+
+  .design-lightbox__loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.72rem;
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  .design-lightbox [data-lightbox-prev]:disabled,
+  .design-lightbox [data-lightbox-next]:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+  }
+
+  @media (max-width: 640px) {
+    .design-lightbox__stage,
+    .design-lightbox__media {
+      max-height: 58dvh;
+    }
+  }
+</style>
+
+<script>
+  interface LightboxItem {
+    id: string
+    title: string
+    description: string
+    alt: string
+    mediaType: 'image' | 'video'
+    originalUrl: string
+    playbackUrl: string
+    thumbUrl: string
+    width: number
+    height: number
+  }
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-design-lightbox]')
+  const dataElement = document.querySelector<HTMLScriptElement>('[data-design-lightbox-data]')
+
+  if (dialog) {
+    const items = dataElement?.textContent
+      ? (JSON.parse(dataElement.textContent) as LightboxItem[])
+      : []
+    const byId = new Map(items.map((item) => [item.id, item]))
+
+    const title = dialog.querySelector<HTMLElement>('[data-lightbox-title]')
+    const description = dialog.querySelector<HTMLElement>('[data-lightbox-description]')
+    const counter = dialog.querySelector<HTMLElement>('[data-lightbox-counter]')
+    const status = dialog.querySelector<HTMLElement>('[data-lightbox-status]')
+    const loading = dialog.querySelector<HTMLElement>('[data-lightbox-loading]')
+    const preview = dialog.querySelector<HTMLImageElement>('[data-lightbox-preview]')
+    const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]')
+    const video = dialog.querySelector<HTMLVideoElement>('[data-lightbox-video]')
+    const stage = dialog.querySelector<HTMLElement>('[data-lightbox-stage]')
+    const original = dialog.querySelector<HTMLAnchorElement>('[data-lightbox-original]')
+    const closeButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]')
+    const prevButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-prev]')
+    const nextButton = dialog.querySelector<HTMLButtonElement>('[data-lightbox-next]')
+    const loadingText = loading?.textContent ?? ''
+
+    let activeItems: LightboxItem[] = []
+    let activeIndex = 0
+    let lastTrigger: HTMLElement | null = null
+    let imageRequest = 0
+    let pointerStartX = 0
+    let pointerStartY = 0
+    let pointerTracking = false
+    let previousOverflow = ''
+    let scrollLocked = false
+
+    const getVisibleItems = (): LightboxItem[] => {
+      const links = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>(
+          '[data-design-item]:not([hidden]) [data-design-card]',
+        ),
+      )
+
+      return links
+        .map((link) => byId.get(link.dataset.designId ?? ''))
+        .filter((item): item is LightboxItem => Boolean(item))
+    }
+
+    const stopVideo = () => {
+      if (!video) return
+      video.pause()
+      video.hidden = true
+      video.removeAttribute('src')
+      video.removeAttribute('poster')
+      video.removeAttribute('aria-label')
+      video.load()
+    }
+
+    const resetMedia = () => {
+      imageRequest += 1
+      if (preview) {
+        preview.hidden = true
+        preview.removeAttribute('src')
+      }
+      if (image) {
+        image.hidden = true
+        image.removeAttribute('src')
+        image.alt = ''
+      }
+      stopVideo()
+      if (loading) {
+        loading.textContent = loadingText
+        loading.hidden = false
+      }
+    }
+
+    const render = () => {
+      const item = activeItems[activeIndex]
+      if (!item) return
+
+      resetMedia()
+
+      if (title) title.textContent = item.title
+      if (description) description.textContent = item.description
+      if (counter) counter.textContent = `${activeIndex + 1} / ${activeItems.length}`
+      if (status) status.textContent = `${activeIndex + 1} / ${activeItems.length}: ${item.title}`
+      if (original) {
+        original.href = item.originalUrl
+        const label = original.dataset.originalLabel ?? ''
+        original.setAttribute('aria-label', `${item.title} — ${label}`)
+      }
+      if (prevButton) prevButton.disabled = activeItems.length < 2
+      if (nextButton) nextButton.disabled = activeItems.length < 2
+
+      if (item.mediaType === 'image') {
+        if (preview && item.thumbUrl) {
+          preview.src = item.thumbUrl
+          preview.hidden = false
+        }
+
+        const request = imageRequest
+        const loader = new Image()
+        loader.decoding = 'async'
+        loader.onload = () => {
+          if (request !== imageRequest || !image) return
+          image.src = item.originalUrl
+          image.alt = item.alt
+          image.hidden = false
+          if (preview) preview.hidden = true
+          if (loading) loading.hidden = true
+        }
+        loader.onerror = () => {
+          if (request !== imageRequest) return
+          if (loading && !item.thumbUrl) loading.textContent = item.title
+          if (preview && item.thumbUrl) preview.hidden = false
+          if (loading && item.thumbUrl) loading.hidden = true
+        }
+        loader.src = item.originalUrl
+        return
+      }
+
+      if (video) {
+        if (item.thumbUrl) video.poster = item.thumbUrl
+        video.src = item.playbackUrl
+        video.setAttribute('aria-label', item.alt)
+        video.hidden = false
+        video.load()
+      }
+      if (loading) loading.hidden = true
+    }
+
+    const open = (visibleItems: LightboxItem[], index: number, trigger: HTMLElement) => {
+      if (visibleItems.length === 0) return
+
+      activeItems = visibleItems
+      activeIndex = index
+      lastTrigger = trigger
+
+      if (!dialog.open) {
+        if (typeof dialog.showModal === 'function') dialog.showModal()
+        else dialog.setAttribute('open', '')
+      }
+
+      if (!scrollLocked) {
+        previousOverflow = document.documentElement.style.overflow
+        document.documentElement.style.overflow = 'hidden'
+        scrollLocked = true
+      }
+      render()
+
+      window.requestAnimationFrame(() => closeButton?.focus())
+    }
+
+    const close = () => {
+      if (!dialog.open) return
+      if (typeof dialog.close === 'function') dialog.close()
+      else dialog.removeAttribute('open')
+    }
+
+    const go = (delta: number) => {
+      if (activeItems.length < 2) return
+      activeIndex = (activeIndex + delta + activeItems.length) % activeItems.length
+      render()
+    }
+
+    document.addEventListener('click', (event) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+
+      const link = target.closest<HTMLAnchorElement>('[data-design-card]')
+      if (!link) return
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+
+      const visibleItems = getVisibleItems()
+      const index = visibleItems.findIndex((item) => item.id === link.dataset.designId)
+      if (index === -1) return
+
+      event.preventDefault()
+      open(visibleItems, index, link)
+    })
+
+    closeButton?.addEventListener('click', close)
+    prevButton?.addEventListener('click', () => go(-1))
+    nextButton?.addEventListener('click', () => go(1))
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) close()
+    })
+
+    dialog.addEventListener('keydown', (event) => {
+      if (event.target instanceof HTMLVideoElement) return
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        go(-1)
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        go(1)
+      } else if (event.key === 'Home') {
+        event.preventDefault()
+        activeIndex = 0
+        render()
+      } else if (event.key === 'End') {
+        event.preventDefault()
+        activeIndex = activeItems.length - 1
+        render()
+      }
+    })
+
+    stage?.addEventListener('pointerdown', (event) => {
+      const target = event.target
+      if (target instanceof Element && target.closest('video, button, a')) return
+      pointerTracking = true
+      pointerStartX = event.clientX
+      pointerStartY = event.clientY
+    })
+
+    stage?.addEventListener('pointerup', (event) => {
+      if (!pointerTracking) return
+      pointerTracking = false
+      const deltaX = event.clientX - pointerStartX
+      const deltaY = event.clientY - pointerStartY
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        go(deltaX > 0 ? -1 : 1)
+      }
+    })
+
+    stage?.addEventListener('pointercancel', () => {
+      pointerTracking = false
+    })
+
+    dialog.addEventListener('close', () => {
+      resetMedia()
+      if (scrollLocked) {
+        document.documentElement.style.overflow = previousOverflow
+        scrollLocked = false
+      }
+      activeItems = []
+      activeIndex = 0
+      lastTrigger?.focus()
+      lastTrigger = null
+    })
+  }
+</script>

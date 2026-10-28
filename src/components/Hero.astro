@@ -2,8 +2,9 @@
 import { Image } from 'astro:assets'
 import portrait from '@/assets/portrait.webp'
 import ArrowDown from './icons/ArrowDown.astro'
+import ArrowRight from './icons/ArrowRight.astro'
 import ArrowUpRight from './icons/ArrowUpRight.astro'
-import { useTranslations, sectionHref } from '@/i18n/utils'
+import { designPath, useTranslations, sectionHref } from '@/i18n/utils'
 import type { Lang } from '@/i18n/ui'
 
 interface Props {
@@ -50,6 +51,10 @@ const stack = ['Astro', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS']
         <a href={sectionHref(locale, 'contact')} class="btn btn-secondary">
           {t('hero.ctaContact')}
           <ArrowUpRight class="size-4" />
+        </a>
+        <a href={designPath(locale)} class="link-arrow ml-1">
+          {t('hero.ctaDesign')}
+          <ArrowRight class="size-3.5" />
         </a>
       </div>
     </article>

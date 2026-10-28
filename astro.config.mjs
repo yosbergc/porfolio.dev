@@ -1,6 +1,7 @@
 ﻿import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import robotsTxt from 'astro-robots-txt'
+import { designWatcher } from './scripts/design-watcher.mjs'
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
       sitemap: 'https://porfolio.dev/sitemap.xml',
       policy: [{ userAgent: '*', allow: '/', disallow: '/components' }],
     }),
+    designWatcher(),
   ],
   i18n: {
     defaultLocale: 'en',

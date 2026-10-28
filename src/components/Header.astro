@@ -3,7 +3,7 @@ import CloseIcon from './icons/Close.astro'
 import MenuIcon from './icons/Menu.astro'
 import LanguageSwitcher from './LanguageSwitcher.astro'
 import ThemeToggle from './ThemeToggle.astro'
-import { useTranslations, homePath, sectionHref } from '@/i18n/utils'
+import { designPath, useTranslations, homePath, sectionHref } from '@/i18n/utils'
 import type { Lang } from '@/i18n/ui'
 
 interface Props {
@@ -17,6 +17,7 @@ const home = homePath(locale)
 const navItems = [
   { label: t('nav.experience'), href: sectionHref(locale, 'experience') },
   { label: t('nav.work'), href: sectionHref(locale, 'work') },
+  { label: t('nav.design'), href: designPath(locale) },
   { label: t('nav.approach'), href: sectionHref(locale, 'approach') },
   { label: t('nav.about'), href: sectionHref(locale, 'about') },
 ]
