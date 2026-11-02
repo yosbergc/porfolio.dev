@@ -27,7 +27,7 @@ date: 2026-11-01
 # Miniatura: coloca la imagen en public/freebies/ y escribe la ruta aquí.
 # Recomendado: 1920x1080 o 1280x720 (16:9).
 # Ejemplo: /freebies/lebron-james.webp
-thumbnail: "/public/freebies/lebron-james.avif"
+thumbnail: "/freebies/lebron-james.avif"
 
 # Texto alternativo de la miniatura (opcional)
 thumbnailAlt:
