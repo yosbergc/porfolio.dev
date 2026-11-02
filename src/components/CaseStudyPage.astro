@@ -26,6 +26,23 @@ const pageTitle =
     ? `${project.title} — Caso de estudio | ${SITE.name}`
     : `${project.title} — Case study | ${SITE.name}`
 
+const siteURL = Astro.site ?? new URL(SITE.url)
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: project.title,
+  description: project.summary[locale],
+  url: new URL(casePath(locale, project.slug), siteURL).href,
+  image: new URL(project.image.src, siteURL).href,
+  inLanguage: locale,
+  author: {
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  about: project.category[locale],
+}
+
 const stackKinds: Record<string, { en: string; es: string }> = {
   Astro: { en: 'Framework', es: 'Framework' },
   'Tailwind CSS': { en: 'Styling', es: 'Estilos' },
@@ -49,6 +66,7 @@ const stackKinds: Record<string, { en: string; es: string }> = {
   image={project.image}
   imageAlt={project.imageAlt[locale]}
   type="article"
+  extraSchema={structuredData}
   alternates={alternatePaths(project.slug)}
 >
   <article>

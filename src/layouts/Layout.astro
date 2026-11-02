@@ -17,9 +17,12 @@ interface Props {
   description: string
   path: string
   image?: ImageMetadata
+  socialImage?: string
   imageAlt?: string
   type?: 'website' | 'article'
   noindex?: boolean
+  forceDark?: boolean
+  extraSchema?: Record<string, unknown> | Record<string, unknown>[]
   alternates?: Record<Lang, string>
 }
 
@@ -29,9 +32,12 @@ const {
   description,
   path,
   image,
+  socialImage,
   imageAlt = ui[locale]['site.ogAlt'],
   type = 'website',
   noindex = false,
+  forceDark = false,
+  extraSchema,
   alternates = alternatePaths(),
 } = Astro.props
 
@@ -40,26 +46,49 @@ const canonical = new URL(path, siteURL).href
 const ogLocale = locale === 'es' ? 'es_ES' : 'en_US'
 const ogLocaleAlternate = locale === 'es' ? 'en_US' : 'es_ES'
 
-const ogImage = image
-  ? new URL(
-      (
-        await getImage({
-          src: image,
-          width: 1200,
-          height: 630,
-          fit: 'cover',
-          position: 'center',
-          format: 'jpg',
-          quality: 82,
-        })
-      ).src,
-      siteURL,
-    ).href
-  : new URL('/og.jpg', siteURL).href
+const ogImage = socialImage
+  ? new URL(socialImage, siteURL).href
+  : image
+    ? new URL(
+        (
+          await getImage({
+            src: image,
+            width: 1200,
+            height: 630,
+            fit: 'cover',
+            position: 'center',
+            format: 'jpg',
+            quality: 82,
+          })
+        ).src,
+        siteURL,
+      ).href
+    : new URL('/og.jpg', siteURL).href
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: SITE.name,
+    url: siteURL.href,
+    email: SITE.email,
+    jobTitle: ui[locale]['site.role'],
+    sameAs: [SITE.linkedin, SITE.github],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: siteURL.href,
+    description: ui[locale]['site.description'],
+    inLanguage: locale,
+  },
+  ...(Array.isArray(extraSchema) ? extraSchema : extraSchema ? [extraSchema] : []),
+]
 ---
 
 <!doctype html>
-<html lang={locale} class="scroll-smooth">
+<html lang={locale} class:list={['scroll-smooth', forceDark && 'dark']}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -67,9 +96,17 @@ const ogImage = image
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content={forceDark ? 'dark' : 'light dark'} />
+    {
+      forceDark ? (
+        <meta name="theme-color" content="#0d0d0c" />
+      ) : (
+        <>
+          <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)" />
+          <meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)" />
+        </>
+      )
+    }
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={new URL(alternates.en, siteURL)} />
@@ -85,8 +122,8 @@ const ogImage = image
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={ogLocaleAlternate} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {!socialImage && <meta property="og:image:width" content="1200" />}
+    {!socialImage && <meta property="og:image:height" content="630" />}
     <meta property="og:image:alt" content={imageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -95,9 +132,15 @@ const ogImage = image
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
-    <script is:inline>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <script is:inline define:vars={{ forceDark }}>
       ;(() => {
         try {
+          if (forceDark) {
+            document.documentElement.classList.add('dark')
+            return
+          }
           const stored = localStorage.getItem('theme')
           const explicit = stored === 'dark' ? true : stored === 'light' ? false : null
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -117,7 +160,7 @@ const ogImage = image
       {ui[locale]['nav.skip']}
     </a>
     <div class="flex min-h-screen flex-col">
-      <Header locale={locale} />
+      <Header locale={locale} showThemeToggle={!forceDark} />
       <main id="main-content" class="flex-1">
         <slot />
       </main>

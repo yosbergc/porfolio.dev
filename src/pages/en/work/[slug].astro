@@ -12,6 +12,22 @@ export function getStaticPaths() {
 
 const { project } = Astro.props as { project: Project }
 const target = casePath('en', project.slug)
+const title = `${project.title} — Yosber Guerrero`
+const description = project.summary.en
+const canonical = `${SITE.url}${target}`
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: project.title,
+  description,
+  url: canonical,
+  inLanguage: 'en',
+  author: {
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+  },
+}
 ---
 
 <!doctype html>
@@ -19,9 +35,25 @@ const target = casePath('en', project.slug)
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{project.title} — Yosber Guerrero</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href={`${SITE.url}${target}`} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <link rel="alternate" hreflang="es" href={`${SITE.url}${casePath('es', project.slug)}`} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${SITE.url}/og.jpg`} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE.url}/og.jpg`} />
+    <meta name="twitter:image:alt" content={title} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>

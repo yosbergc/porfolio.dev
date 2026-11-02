@@ -1,0 +1,21 @@
+---
+import FreebiePostPage from '@/components/FreebiePostPage.astro'
+import { getFreebies, type FreebieEntry } from '@/lib/freebies'
+
+export async function getStaticPaths() {
+  const projects = await getFreebies()
+
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }))
+}
+
+interface Props {
+  entry: FreebieEntry
+}
+
+const { entry } = Astro.props
+---
+
+<FreebiePostPage entry={entry} locale="es" />

@@ -1,5 +1,17 @@
 ---
 import { SITE } from '@/data/site'
+import { ui } from '@/i18n/ui'
+
+const title = ui.en['site.title']
+const description = ui.en['site.description']
+const canonical = `${SITE.url}/`
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  url: canonical,
+  inLanguage: 'en',
+}
 ---
 
 <!doctype html>
@@ -7,18 +19,30 @@ import { SITE } from '@/data/site'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Yosber Guerrero — Frontend Developer</title>
-    <meta name="description" content="Portfolio of Yosber Guerrero, frontend developer." />
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href={`${SITE.url}/`} />
-    <link rel="alternate" hreflang="en" href={`${SITE.url}/`} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
     <link rel="alternate" hreflang="es" href={`${SITE.url}/es/`} />
-    <link rel="alternate" hreflang="x-default" href={`${SITE.url}/`} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${SITE.url}/og.jpg`} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE.url}/og.jpg`} />
+    <meta name="twitter:image:alt" content={title} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     <meta http-equiv="refresh" content="0; url=/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
-    <h1>Yosber Guerrero — Frontend Developer</h1>
+    <h1>{title}</h1>
     <p><a href="/">Continue to the portfolio</a></p>
   </body>
 </html>

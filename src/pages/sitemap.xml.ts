@@ -1,7 +1,15 @@
 import type { APIRoute } from 'astro'
 import { projects } from '@/data/projects'
 import { SITE } from '@/data/site'
-import { casePath, designAlternates, designPath, homePath } from '@/i18n/utils'
+import { getFreebies } from '@/lib/freebies'
+import {
+  casePath,
+  designAlternates,
+  designPath,
+  freebieAlternates,
+  freebiePath,
+  homePath,
+} from '@/i18n/utils'
 import type { Lang } from '@/i18n/ui'
 
 export const prerender = true
@@ -17,7 +25,7 @@ function urlEntry(path: string, alternates: Record<Lang, string>): string {
 </url>`
 }
 
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
   const entries: string[] = []
 
   for (const lang of languages) {
@@ -26,6 +34,20 @@ export const GET: APIRoute = () => {
 
   for (const lang of languages) {
     entries.push(urlEntry(designPath(lang), designAlternates()))
+  }
+
+  for (const lang of languages) {
+    entries.push(urlEntry(freebiePath(lang), freebieAlternates()))
+  }
+
+  const freebies = await getFreebies()
+
+  for (const project of freebies) {
+    for (const lang of languages) {
+      entries.push(
+        urlEntry(freebiePath(lang, project.id), freebieAlternates(project.id)),
+      )
+    }
   }
 
   for (const project of projects) {

@@ -25,6 +25,8 @@ const designs = getVisibleDesigns()
   title={t('design.pageTitle')}
   description={t('design.pageDescription')}
   path={designPath(locale)}
+  image={designs[0]?.thumb}
+  imageAlt={designs[0]?.alt[locale]}
   alternates={designAlternates()}
 >
   <section class="container-page pt-10 md:pt-16">

@@ -1,0 +1,261 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import FreebieCard from './FreebieCard.astro'
+import ArrowDown from './icons/ArrowDown.astro'
+import PlayIcon from './icons/Play.astro'
+import { freebieAlternates, freebiePath, useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/ui'
+import { SITE } from '@/data/site'
+import {
+  formatFreebieDate,
+  getFreebies,
+  hasFreebieDownload,
+  freebieThumbnailAlt,
+  type FreebieEntry,
+} from '@/lib/freebies'
+
+interface Props {
+  entry: FreebieEntry
+  locale: Lang
+}
+
+const { entry, locale } = Astro.props
+const t = useTranslations(locale)
+
+const title = entry.data.title[locale]
+const description = entry.data.description[locale]
+const about = entry.data.about?.[locale]
+const includes = entry.data.includes.map((item) => item[locale])
+const thumbnail = entry.data.thumbnail?.trim()
+const thumbnailFallback = entry.data.thumbnailFallback?.trim()
+const usePicture = Boolean(
+  thumbnail?.toLowerCase().endsWith('.avif') && thumbnailFallback,
+)
+const ogImage = entry.data.ogImage?.trim() || thumbnail
+const downloadUrl = entry.data.downloadUrl?.trim()
+const canDownload = hasFreebieDownload(entry)
+const alt = freebieThumbnailAlt(entry, locale)
+const date = formatFreebieDate(entry.data.date, locale)
+
+const others = (await getFreebies())
+  .filter((project) => project.id !== entry.id)
+  .slice(0, 3)
+
+const siteURL = Astro.site ?? new URL(SITE.url)
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description,
+  url: new URL(freebiePath(locale, entry.id), siteURL).href,
+  image: new URL(ogImage ?? '/og.jpg', siteURL).href,
+  datePublished: entry.data.date.toISOString(),
+  inLanguage: locale,
+  isAccessibleForFree: true,
+  author: {
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  ...(downloadUrl ? { sameAs: downloadUrl } : {}),
+}
+---
+
+<Layout
+  locale={locale}
+  title={`${title} — ${t('site.name')}`}
+  description={description}
+  path={freebiePath(locale, entry.id)}
+  alternates={freebieAlternates(entry.id)}
+  socialImage={ogImage}
+  imageAlt={alt}
+  type="article"
+  forceDark
+  extraSchema={structuredData}
+>
+  <article class="container-page pt-10 md:pt-16">
+    <div class="flex flex-wrap items-center gap-3">
+      <a href={freebiePath(locale)} class="link-arrow text-muted">
+        <span aria-hidden="true">←</span>
+        {t('freebies.backAll')}
+      </a>
+      <span class="chip chip-solid">{t('freebies.badge')}</span>
+    </div>
+
+    <header class="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow">{t('freebies.eyebrow')}</p>
+        <h1 class="display-sm mt-5 max-w-[18ch] text-balance">{title}</h1>
+        <p class="mt-5 max-w-xl text-sm leading-relaxed text-muted">{description}</p>
+      </div>
+
+      <div class="lg:col-span-4 lg:justify-self-end">
+        <div class="flex flex-wrap gap-1.5">
+          {entry.data.format && <span class="chip">{entry.data.format}</span>}
+          {entry.data.duration && <span class="chip">{entry.data.duration}</span>}
+          <span class="chip">{date}</span>
+        </div>
+
+        <div class="mt-4">
+          {
+            canDownload ? (
+              <a
+                href={downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+                aria-label={`${t('freebies.download')} ${title}`}
+              >
+                <ArrowDown class="size-4" />
+                {t('freebies.download')}
+                <span class="sr-only">({t('work.openNewTab')})</span>
+              </a>
+            ) : (
+              <span class="btn btn-secondary cursor-default opacity-60" aria-disabled="true">
+                <ArrowDown class="size-4" />
+                {t('freebies.comingSoon')}
+              </span>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="mt-10 overflow-hidden rounded-[clamp(20px,2.4vw,30px)] border border-ink/10 bg-surface-2 md:mt-14">
+      {
+        thumbnail ? (
+          usePicture ? (
+            <picture class="block w-full">
+              <source srcset={thumbnail} type="image/avif" />
+              <img
+                src={thumbnailFallback}
+                alt={alt}
+                loading="eager"
+                decoding="async"
+                class="aspect-video w-full object-cover"
+              />
+            </picture>
+          ) : (
+            <img
+              src={thumbnail}
+              alt={alt}
+              loading="eager"
+              decoding="async"
+              class="aspect-video w-full object-cover"
+            />
+          )
+        ) : (
+          <div class="freebie-placeholder flex aspect-[16/9] w-full flex-col items-center justify-center gap-3 p-8 text-center">
+            <span class="flex size-12 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 backdrop-blur-md">
+              <PlayIcon class="ml-0.5 size-4" />
+            </span>
+            <span class="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-white/45">
+              {t('freebies.media')}
+            </span>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-12 md:mt-14">
+      <div class="lg:col-span-8">
+        {about && <p class="max-w-[68ch] text-sm leading-relaxed text-muted">{about}</p>}
+
+        {includes.length > 0 && (
+          <div class={about ? 'mt-8' : ''}>
+            <h2 class="text-lg font-semibold tracking-[-0.02em]">{t('freebies.included')}</h2>
+            <ul class="mt-4 grid gap-2.5">
+              {includes.map((item) => (
+                <li class="flex items-start gap-2.5 text-sm leading-relaxed text-muted">
+                  <span class="mt-[0.55em] size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <aside class="lg:col-span-4">
+        <div class="card p-5 sm:p-6">
+          <p class="eyebrow">{t('freebies.details')}</p>
+
+          <dl class="mt-4">
+            {entry.data.format && (
+              <div class="meta-row">
+                <dt>{t('freebies.format')}</dt>
+                <dd>{entry.data.format}</dd>
+              </div>
+            )}
+            {entry.data.duration && (
+              <div class="meta-row">
+                <dt>{t('freebies.duration')}</dt>
+                <dd>{entry.data.duration}</dd>
+              </div>
+            )}
+            <div class="meta-row">
+              <dt>{t('freebies.released')}</dt>
+              <dd>{date}</dd>
+            </div>
+          </dl>
+
+          {canDownload && (
+            <p class="mt-5 text-xs leading-relaxed text-muted/80">{t('freebies.downloadNote')}</p>
+          )}
+
+          {
+            canDownload ? (
+              <a
+                href={downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary mt-4 w-full"
+              >
+                <ArrowDown class="size-4" />
+                {t('freebies.download')}
+                <span class="sr-only">({t('work.openNewTab')})</span>
+              </a>
+            ) : (
+              <span class="btn btn-secondary mt-4 w-full cursor-default opacity-60" aria-disabled="true">
+                <ArrowDown class="size-4" />
+                {t('freebies.comingSoon')}
+              </span>
+            )
+          }
+
+          <p class="mt-4 text-xs leading-relaxed text-muted/80">{t('freebies.license')}</p>
+        </div>
+      </aside>
+    </div>
+
+    {
+      others.length > 0 && (
+        <section class="mt-14 border-t border-ink/10 pt-8 md:mt-20">
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p class="eyebrow">{t('freebies.more')}</p>
+              <p class="mt-2 text-sm text-muted">{t('freebies.moreDescription')}</p>
+            </div>
+            <a href={freebiePath(locale)} class="link-arrow">
+              {t('freebies.allProjects')}
+            </a>
+          </div>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((project) => (
+              <FreebieCard entry={project} locale={locale} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .freebie-placeholder {
+    background:
+      radial-gradient(circle at 30% 20%, rgb(var(--accent) / 0.2), transparent 58%),
+      linear-gradient(145deg, rgb(var(--surface-2)), rgb(var(--bg)));
+  }
+</style>

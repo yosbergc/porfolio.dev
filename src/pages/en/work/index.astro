@@ -1,5 +1,16 @@
 ---
 import { SITE } from '@/data/site'
+
+const title = 'Selected work — Yosber Guerrero'
+const description = 'Selected software and design work by Yosber Guerrero.'
+const canonical = `${SITE.url}/#work`
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  url: canonical,
+  inLanguage: 'en',
+}
 ---
 
 <!doctype html>
@@ -7,9 +18,25 @@ import { SITE } from '@/data/site'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Selected work — Yosber Guerrero</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href={`${SITE.url}/#work`} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={`${SITE.url}/#work`} />
+    <link rel="alternate" hreflang="es" href={`${SITE.url}/es/#work`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE.url}/#work`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${SITE.url}/og.jpg`} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE.url}/og.jpg`} />
+    <meta name="twitter:image:alt" content={title} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     <meta http-equiv="refresh" content="0; url=/#work" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
