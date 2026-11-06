@@ -63,7 +63,7 @@ const structuredData = {
 
 <Layout
   locale={locale}
-  title={`${title} — ${t('site.name')}`}
+  title={`${title} | ${t('site.name')}`}
   description={description}
   path={freebiePath(locale, entry.id)}
   alternates={freebieAlternates(entry.id)}
@@ -84,8 +84,7 @@ const structuredData = {
 
     <header class="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
       <div class="lg:col-span-8">
-        <p class="eyebrow">{t('freebies.eyebrow')}</p>
-        <h1 class="display-sm mt-5 max-w-[18ch] text-balance">{title}</h1>
+        <h1 class="display-sm max-w-[18ch] text-balance">{title}</h1>
         <p class="mt-5 max-w-xl text-sm leading-relaxed text-muted">{description}</p>
       </div>
 
@@ -234,7 +233,6 @@ const structuredData = {
           <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p class="eyebrow">{t('freebies.more')}</p>
-              <p class="mt-2 text-sm text-muted">{t('freebies.moreDescription')}</p>
             </div>
             <a href={freebiePath(locale)} class="link-arrow">
               {t('freebies.allProjects')}
@@ -254,8 +252,6 @@ const structuredData = {
 
 <style>
   .freebie-placeholder {
-    background:
-      radial-gradient(circle at 30% 20%, rgb(var(--accent) / 0.2), transparent 58%),
-      linear-gradient(145deg, rgb(var(--surface-2)), rgb(var(--bg)));
+    background: rgb(var(--surface-2));
   }
 </style>

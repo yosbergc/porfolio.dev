@@ -71,14 +71,14 @@ function defaultAlt(
 ): LocalizedText {
   if (mediaType === 'video') {
     return {
-      en: `${title.en} — motion design piece`,
-      es: `${title.es} — pieza de diseño en movimiento`,
+      en: `${title.en}: motion design piece`,
+      es: `${title.es}: pieza de diseño en movimiento`,
     }
   }
 
   return {
-    en: `${title.en} — graphic design piece`,
-    es: `${title.es} — pieza de diseño gráfico`,
+    en: `${title.en}: graphic design piece`,
+    es: `${title.es}: pieza de diseño gráfico`,
   }
 }
 

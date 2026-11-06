@@ -132,26 +132,26 @@
 
   .display {
     font-family: theme('fontFamily.display');
-    font-size: clamp(2.7rem, 5.9vw, 5.2rem);
+    font-size: clamp(2.5rem, 4.8vw, 4.3rem);
     font-weight: 550;
-    letter-spacing: -0.055em;
-    line-height: 0.97;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
   }
 
   .display-sm {
     font-family: theme('fontFamily.display');
     font-size: clamp(2.2rem, 4.4vw, 3.9rem);
     font-weight: 560;
-    letter-spacing: -0.045em;
-    line-height: 1.02;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
   }
 
   .h2 {
     font-family: theme('fontFamily.display');
     font-size: clamp(2rem, 3.7vw, 3.3rem);
     font-weight: 560;
-    letter-spacing: -0.04em;
-    line-height: 1.02;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
 
   .h3 {
@@ -159,14 +159,6 @@
     font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1.2;
-  }
-
-  .serif-accent {
-    font-family: theme('fontFamily.serif');
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.035em;
-    color: rgb(var(--accent));
   }
 
   .bento {
@@ -179,7 +171,6 @@
     background: rgb(var(--surface));
     border: 1px solid rgb(var(--ink) / 0.09);
     border-radius: clamp(20px, 2.2vw, 28px);
-    box-shadow: theme('boxShadow.soft');
   }
 
   .card-inverted {
@@ -195,14 +186,12 @@
   .card-lift {
     transition:
       transform 0.35s theme('transitionTimingFunction.out'),
-      box-shadow 0.35s theme('transitionTimingFunction.out'),
       border-color 0.35s theme('transitionTimingFunction.out');
   }
 
   .card-lift:hover {
     transform: translateY(-4px);
     border-color: rgb(var(--ink) / 0.17);
-    box-shadow: theme('boxShadow.lift');
   }
 
   .btn {
@@ -331,13 +320,11 @@
     backdrop-filter: blur(18px) saturate(160%);
     transition:
       border-color 0.3s ease,
-      box-shadow 0.3s ease,
       background-color 0.3s ease;
   }
 
   .site-header[data-scrolled='true'] {
     border-bottom-color: rgb(var(--ink) / 0.09);
-    box-shadow: 0 10px 30px -25px rgb(0 0 0 / 0.35);
     background: rgb(var(--bg) / 0.9);
   }
 
@@ -544,28 +531,11 @@
     text-align: right;
     font-weight: 550;
   }
-
-  .grain {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .grain::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    opacity: 0.025;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
 }
 
 @media (hover: none) {
   .card-lift:hover {
     transform: none;
-    box-shadow: theme('boxShadow.soft');
   }
 }
 

@@ -1,13 +1,13 @@
 ---
 # Título del proyecto (EN / ES)
 title:
-  en: LeBron James — 16:9 Edit
-  es: LeBron James — Edición 16:9
+  en: "LeBron James: 16:9 Edit"
+  es: "LeBron James: Edición 16:9"
 
 # Descripción corta (EN / ES)
 description:
-  en: "A high-energy 16:9 edit built around LeBron James — fast cuts, bold type and a court-ready rhythm."
-  es: "Una edición 16:9 llena de energía inspirada en LeBron James: cortes rápidos, tipografía contundente y ritmo de cancha."
+  en: "A 16:9 edit built around LeBron James: fast cuts, strong type and rhythm."
+  es: "Una edición 16:9 inspirada en LeBron James: cortes rápidos, tipografía fuerte y ritmo de cancha."
 
 # Texto largo opcional para la página de detalle (EN / ES)
 about:

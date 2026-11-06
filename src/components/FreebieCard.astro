@@ -39,7 +39,7 @@ const date = formatFreebieDate(entry.data.date, locale)
   <a
     href={href}
     class="relative block aspect-video overflow-hidden bg-surface-2"
-    aria-label={`${title} — ${t('freebies.viewProject')}`}
+    aria-label={`${title}: ${t('freebies.viewProject')}`}
   >
     {
       thumbnail ? (
@@ -135,8 +135,6 @@ const date = formatFreebieDate(entry.data.date, locale)
 
 <style>
   .freebie-placeholder {
-    background:
-      radial-gradient(circle at 30% 20%, rgb(var(--accent) / 0.2), transparent 58%),
-      linear-gradient(145deg, rgb(var(--surface-2)), rgb(var(--bg)));
+    background: rgb(var(--surface-2));
   }
 </style>

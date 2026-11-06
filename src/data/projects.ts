@@ -57,8 +57,8 @@ export const projects: Project[] = [
       es: 'Pantallas al día, incluso sin internet.',
     },
     summary: {
-      en: 'A private, offline-first digital signage platform for multi-location businesses. The public experience explains how teams upload media, schedule playback by branch and keep every screen current — even when the connection drops.',
-      es: 'Una plataforma privada de señalización digital con enfoque offline-first para negocios con varias sucursales. La experiencia pública explica cómo subir contenido, programar la reproducción por local y mantener cada pantalla al día, incluso si se cae la conexión.',
+      en: 'A digital signage platform for multi-location businesses. The public site shows how teams upload media, schedule playback by branch and keep every screen current, even offline.',
+      es: 'Una plataforma de señalización digital para negocios con varias sucursales. El sitio público muestra cómo subir contenido, programar la reproducción por local y mantener las pantallas al día, incluso sin internet.',
     },
     overview: {
       en: 'FuturaSight Screens is a private SaaS product from Futura Sight for restaurants and other multi-location businesses. The public site introduces the product, its core workflow and a manually reviewed business signup. The internal dashboard is not publicly accessible.',
@@ -171,12 +171,12 @@ export const projects: Project[] = [
       es: 'Un sitio de agencia que predica con el ejemplo.',
     },
     summary: {
-      en: 'The bilingual home of a marketing and web studio in Charlotte. Services, selected client work, the founding team and contact paths come together in one clear, editorial experience.',
-      es: 'La casa bilingüe de un estudio de marketing y web en Charlotte. Servicios, proyectos de clientes, el equipo fundador y vías de contacto se reúnen en una experiencia editorial clara.',
+      en: 'The bilingual site of a marketing and web studio in Charlotte: services, client work, the founding team and contact in one place.',
+      es: 'El sitio bilingüe de un estudio de marketing y web en Charlotte: servicios, proyectos de clientes, el equipo fundador y contacto en un solo lugar.',
     },
     overview: {
-      en: 'Futura Sight is a marketing and communications agency in Charlotte, North Carolina. Its site has to sell a broad offer — web development, SEO, content, advertising and video — while making the actual work easy to evaluate.',
-      es: 'Futura Sight es una agencia de marketing y comunicaciones en Charlotte, Carolina del Norte. Su sitio debe vender una oferta amplia —desarrollo web, SEO, contenido, publicidad y video— y a la vez facilitar la evaluación del trabajo real.',
+      en: 'Futura Sight is a marketing and communications agency in Charlotte, North Carolina. Its site has to sell web development, SEO, content, advertising and video while making the actual work easy to evaluate.',
+      es: 'Futura Sight es una agencia de marketing y comunicaciones en Charlotte, Carolina del Norte. Su sitio debe vender una oferta amplia desarrollo web, SEO, contenido, publicidad y video y a la vez facilitar la evaluación del trabajo real.',
     },
     challenge: {
       en: 'Agencies often bury their best proof under a list of services. The challenge was to explain a multi-disciplinary offer without turning the homepage into a menu, and to give each case study enough context to be credible.',
@@ -291,8 +291,8 @@ export const projects: Project[] = [
       es: 'Primero la confianza, luego la búsqueda.',
     },
     summary: {
-      en: 'A bilingual real estate site for a family-run team serving the Carolinas. Human stories sit next to the tools buyers and sellers expect: MLS search, agent profiles, service areas, reviews, FAQs and lead forms.',
-      es: 'Un sitio inmobiliario bilingüe para un equipo familiar que atiende las Carolinas. Las historias humanas conviven con las herramientas que compradores y vendedores esperan: búsqueda MLS, perfiles de agentes, áreas de servicio, reseñas, FAQs y formularios.',
+      en: 'A bilingual real estate site for a family-run team in the Carolinas, with MLS search, agent profiles, service areas, reviews, FAQs and lead forms.',
+      es: 'Un sitio inmobiliario bilingüe para un equipo familiar en las Carolinas, con búsqueda MLS, perfiles de agentes, áreas de servicio, reseñas, FAQs y formularios.',
     },
     overview: {
       en: 'Right At Home Realty Team works with buyers, sellers and investors across North Carolina and South Carolina. The site has to earn trust quickly, explain the team’s law-enforcement background and make property search feel like the natural next step.',
@@ -416,12 +416,12 @@ export const projects: Project[] = [
     title: 'Azteca Woodlawn',
     category: { en: 'Client · Restaurant', es: 'Cliente · Restaurante' },
     tagline: {
-      en: 'A neighborhood institution, brought online with care.',
-      es: 'Una institución del barrio, llevada online con cuidado.',
+      en: 'A neighborhood institution, brought online.',
+      es: 'Una institución del barrio, llevada online.',
     },
     summary: {
-      en: 'The digital home of the oldest Azteca location in Charlotte. Built around more than 30 years of history, thousands of reviews and a menu that needed to be one tap away.',
-      es: 'La casa digital de la ubicación más antigua de Azteca en Charlotte. Construida alrededor de más de 30 años de historia, miles de reseñas y un menú que debía estar a un toque.',
+      en: 'The site of the oldest Azteca location in Charlotte, with 30 years of history, thousands of reviews and the menu one tap away.',
+      es: 'El sitio de la ubicación más antigua de Azteca en Charlotte, con 30 años de historia, miles de reseñas y el menú a un toque.',
     },
     overview: {
       en: 'Azteca Woodlawn is the oldest and highest-rated location in the Azteca family in Charlotte. The site has to protect that legacy while doing the practical work: showing the menu, opening hours, location, reviews and a direct route to online ordering.',
@@ -549,8 +549,8 @@ export const projects: Project[] = [
       es: 'Descubrimiento local, recompensas y pedidos en un solo flujo.',
     },
     summary: {
-      en: 'A conversion-focused bilingual site for the second original Azteca restaurant, with online ordering, a VIP rewards path and local content for Gastonia diners.',
-      es: 'Un sitio bilingüe enfocado en conversión para el segundo restaurante original de Azteca, con pedidos en línea, ruta de recompensas VIP y contenido local para quienes comen en Gastonia.',
+      en: 'A bilingual site for the second original Azteca restaurant, with online ordering, VIP rewards and local content for Gastonia.',
+      es: 'Un sitio bilingüe para el segundo restaurante original de Azteca, con pedidos en línea, recompensas VIP y contenido local para Gastonia.',
     },
     overview: {
       en: 'Azteca Gastonia describes itself as the second original restaurant of the Azteca family. The site needs to help people discover the restaurant locally, order without friction and come back through a VIP rewards experience.',
@@ -687,8 +687,8 @@ export const projects: Project[] = [
       es: 'Comida, cultura y una razón para volver.',
     },
     summary: {
-      en: 'A neighborhood restaurant site in Charlotte with a festival-like visual voice, event storytelling, monthly dishes and direct online ordering.',
-      es: 'Un sitio de restaurante de barrio en Charlotte con una voz visual festiva, narrativa de eventos, platos del mes y pedidos en línea directos.',
+      en: 'A neighborhood restaurant site in Charlotte with events, monthly dishes and direct online ordering.',
+      es: 'Un sitio de restaurante de barrio en Charlotte con eventos, platos del mes y pedidos en línea directos.',
     },
     overview: {
       en: 'Azteca Smith Corners is the Azteca location in the Smith Corners area of Charlotte. The site has to stand out in a crowded local market while still answering the everyday questions: menu, hours, location and ordering.',

@@ -27,7 +27,7 @@ const navItems = [
 
 <header class="site-header" data-site-header>
   <div class="container-page flex h-[4.4rem] items-center justify-between gap-4">
-    <a href={home} class="flex items-center gap-2.5 no-underline" aria-label={`${t('site.name')} — ${t('nav.home')}`}>
+    <a href={home} class="flex items-center gap-2.5 no-underline" aria-label={`${t('site.name')}: ${t('nav.home')}`}>
       <span class="brand-mark" aria-hidden="true">YG</span>
       <span class="hidden text-[0.82rem] font-semibold tracking-[-0.02em] sm:block">
         {t('site.name')}
@@ -67,7 +67,7 @@ const navItems = [
   </div>
 
   <div id="mobile-menu" class="mobile-menu border-t border-ink/10 lg:hidden" data-mobile-menu data-open="false">
-    <nav class="container-page flex flex-col py-4" aria-label={`${t('nav.label')} — ${t('nav.menu')}`}>
+      <nav class="container-page flex flex-col py-4" aria-label={`${t('nav.label')}: ${t('nav.menu')}`}>
       {
         navItems.map((item) => (
           <a

@@ -1,4 +1,4 @@
-# Yosber Guerrero — Portfolio
+# Yosber Guerrero  Portfolio
 
 Personal portfolio for Yosber Guerrero, full stack developer, graphic designer and programming content creator. The site is a bilingual (English/Spanish) editorial portfolio built around a responsive bento grid, real client screenshots, project case studies and a graphic design gallery.
 
@@ -136,12 +136,12 @@ All six featured projects were live at the time of research (October 2026). Scre
 
 Public signals verified during research:
 
-- **FuturaSight Screens** — Astro asset pipeline, Tailwind-style compiled CSS, Cloudflare Insights; public routes `/`, `/login`, `/registro`. Internal dashboard and backend are private.
-- **Futura Sight** — Astro asset pipeline, compiled utility CSS, vanilla JavaScript, Vercel Analytics; bilingual `/es/` route.
-- **Right At Home Realty Team** — Astro generator metadata, compiled utility CSS, DM Sans Variable, IDX Addons widgets, Vercel Analytics; bilingual `/es` route.
-- **Azteca Woodlawn** — Astro v7.0.9 generator metadata, compiled utility CSS, DoorDash ordering, Google Maps Embed API, Vercel Analytics; English route `/en`.
-- **Azteca Gastonia** — Astro v7.0.9, compiled utility CSS, Deliverect Direct ordering, VIP rewards link, Google Maps Embed API, Vercel Analytics; bilingual routes.
-- **Azteca Smith Corners** — Astro v7.0.9, compiled utility CSS, DoorDash ordering, Google Maps Embed API, Vercel Analytics; Spanish-first content.
+- **FuturaSight Screens**  Astro asset pipeline, Tailwind-style compiled CSS, Cloudflare Insights; public routes `/`, `/login`, `/registro`. Internal dashboard and backend are private.
+- **Futura Sight**  Astro asset pipeline, compiled utility CSS, vanilla JavaScript, Vercel Analytics; bilingual `/es/` route.
+- **Right At Home Realty Team**  Astro generator metadata, compiled utility CSS, DM Sans Variable, IDX Addons widgets, Vercel Analytics; bilingual `/es` route.
+- **Azteca Woodlawn**  Astro v7.0.9 generator metadata, compiled utility CSS, DoorDash ordering, Google Maps Embed API, Vercel Analytics; English route `/en`.
+- **Azteca Gastonia**  Astro v7.0.9, compiled utility CSS, Deliverect Direct ordering, VIP rewards link, Google Maps Embed API, Vercel Analytics; bilingual routes.
+- **Azteca Smith Corners**  Astro v7.0.9, compiled utility CSS, DoorDash ordering, Google Maps Embed API, Vercel Analytics; Spanish-first content.
 
 The project pages distinguish frameworks, styling, languages, integrations and analytics in the verified-stack list. Internal dashboards, private repositories, CMS configuration, CRM/MLS accounts, form backends and analytics accounts were not inspected; each case study includes a “What I couldn’t verify” section. No traffic, lead, revenue or performance metrics are claimed.
 

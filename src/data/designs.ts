@@ -24,14 +24,14 @@ export interface DesignOverride {
 export const designOverrides: Record<string, DesignOverride> = {
   'Amor a primera moridda.png': {
     title: {
-      en: 'Love at first bite — bacon-wrapped jalapeño',
-      es: 'Amor a primera mordida — jalapeño con tocino',
+      en: 'Love at first bite: bacon-wrapped jalapeño',
+      es: 'Amor a primera mordida: jalapeño con tocino',
     },
   },
   'aztecamexican2.png': {
     title: {
-      en: 'A drink and nothing more — Azteca Mexican Restaurant',
-      es: 'Un trago y nada más — Azteca Mexican Restaurant',
+      en: 'A drink and nothing more: Azteca Mexican Restaurant',
+      es: 'Un trago y nada más: Azteca Mexican Restaurant',
     },
   },
   'BAJARDEPESO.png': {
@@ -78,14 +78,14 @@ export const designOverrides: Record<string, DesignOverride> = {
   },
   'Flyer - Screen - Motion Restaurant.mp4': {
     title: {
-      en: 'Super Delicious Burger — 45% off',
-      es: 'Super Delicious Burger — 45% de descuento',
+      en: 'Super Delicious Burger: 45% off',
+      es: 'Super Delicious Burger: 45% de descuento',
     },
   },
   'Menu Vertical 9-16 pizza.png': {
     title: {
-      en: 'Pepperoni Pizza — vertical menu',
-      es: 'Pepperoni Pizza — menú vertical',
+      en: 'Pepperoni Pizza: vertical menu',
+      es: 'Pepperoni Pizza: menú vertical',
     },
   },
   'Menu-Restaurant 16-9 Burger.png': {
@@ -102,8 +102,8 @@ export const designOverrides: Record<string, DesignOverride> = {
   },
   'Motion Graphics - 9-16.mp4': {
     title: {
-      en: 'Cashea — motion graphics concept',
-      es: 'Cashea — concepto de motion graphics',
+      en: 'Cashea: motion graphics concept',
+      es: 'Cashea: concepto de motion graphics',
     },
   },
   'Motion Graphics 2 - 9-16 .mp4': {
@@ -120,8 +120,8 @@ export const designOverrides: Record<string, DesignOverride> = {
   },
   'tequila_sunrise.png': {
     title: {
-      en: 'Tequila Sunrise — a sunrise in your glass',
-      es: 'Tequila Sunrise — un amanecer en tu copa',
+      en: 'Tequila Sunrise: a sunrise in your glass',
+      es: 'Tequila Sunrise: un amanecer en tu copa',
     },
   },
 }

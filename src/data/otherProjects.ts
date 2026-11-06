@@ -52,8 +52,8 @@ export const otherProjects: OtherProject[] = [
   {
     title: 'Kyro Search',
     description: {
-      en: 'A landing page that turns raw Google Search Console data into actionable SEO opportunities. Built with Next.js.',
-      es: 'Una landing que convierte datos crudos de Google Search Console en oportunidades SEO accionables. Creada con Next.js.',
+      en: 'A landing page that turns Google Search Console data into SEO opportunities. Built with Next.js.',
+      es: 'Una landing que convierte datos de Google Search Console en oportunidades SEO. Creada con Next.js.',
     },
     url: 'https://seo-tool-landing.vercel.app/',
     image: '/projects/kyrosearch.jpg',
@@ -64,8 +64,8 @@ export const otherProjects: OtherProject[] = [
   {
     title: 'Google Translate Clone',
     description: {
-      en: 'A fun Google Translate clone built with Next.js and Tailwind CSS.',
-      es: 'Un clon divertido de Google Translate creado con Next.js y Tailwind CSS.',
+      en: 'A Google Translate clone built with Next.js and Tailwind CSS.',
+      es: 'Un clon de Google Translate creado con Next.js y Tailwind CSS.',
     },
     url: 'https://google-translate-typescript.vercel.app/',
     code: 'https://github.com/yosbergc/google-translate-typescript',

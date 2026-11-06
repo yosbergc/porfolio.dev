@@ -23,8 +23,8 @@ const nextPath = casePath(locale, nextProject.slug)
 
 const pageTitle =
   locale === 'es'
-    ? `${project.title} — Caso de estudio | ${SITE.name}`
-    : `${project.title} — Case study | ${SITE.name}`
+    ? `${project.title}: Caso de estudio | ${SITE.name}`
+    : `${project.title}: Case study | ${SITE.name}`
 
 const siteURL = Astro.site ?? new URL(SITE.url)
 const structuredData = {

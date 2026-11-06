@@ -22,7 +22,7 @@ const values = [
 
 <section id="about" class="section-pad scroll-m-20 border-t border-ink/10">
   <div class="container-page">
-    <SectionHeading eyebrow={t('about.eyebrow')} split={false}>
+    <SectionHeading split={false}>
       <h2 class="h2 max-w-[15ch] text-balance">{t('about.title')}</h2>
     </SectionHeading>
 
@@ -45,11 +45,8 @@ const values = [
       <aside class="card-inverted card col-span-12 p-6 sm:p-9 lg:col-span-5 lg:p-10">
         <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-bg/65">{t('about.valuesLabel')}</p>
         <ol class="mt-6 divide-y divide-bg/10">
-          {values.map((value, index) => (
-            <li class="grid grid-cols-[2rem_1fr] gap-3 py-5 first:pt-0 last:pb-0">
-              <span class="pt-0.5 text-[0.65rem] font-semibold tracking-[0.12em] text-bg/65">
-                {String(index + 1).padStart(2, '0')}
-              </span>
+          {values.map((value) => (
+            <li class="py-5 first:pt-0 last:pb-0">
               <div>
                 <h3 class="text-base font-semibold tracking-[-0.02em] text-bg">{value.title}</h3>
                 <p class="mt-1.5 text-sm leading-relaxed text-bg/60">{value.text}</p>

@@ -34,7 +34,7 @@ const sizesBySlug: Record<string, string> = {
 
 <section id="work" class="section-pad scroll-m-20 border-t border-ink/10">
   <div class="container-page">
-    <SectionHeading eyebrow={t('work.eyebrow')} description={t('work.description')}>
+    <SectionHeading description={t('work.description')}>
       <h2 class="h2 max-w-[14ch] text-balance">{t('work.title')}</h2>
     </SectionHeading>
 
@@ -84,7 +84,7 @@ const sizesBySlug: Record<string, string> = {
                       <span class="sr-only">({t('work.openNewTab')})</span>
                     </a>
                   </h3>
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} — ${t('work.live')} (${t('work.openNewTab')})`} class="text-muted transition-colors hover:text-ink">
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.title}: ${t('work.live')} (${t('work.openNewTab')})`} class="text-muted transition-colors hover:text-ink">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7" />
                       <path d="M7 7h10v10" />

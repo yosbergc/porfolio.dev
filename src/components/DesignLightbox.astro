@@ -110,7 +110,6 @@ const serializedData = JSON.stringify(lightboxData).replace(/</g, '\\u003c')
     border: 1px solid rgb(var(--ink) / 0.12);
     border-radius: clamp(20px, 2.2vw, 28px);
     background: rgb(var(--surface));
-    box-shadow: 0 40px 100px -40px rgb(0 0 0 / 0.65);
   }
 
   .design-lightbox__stage {
@@ -262,7 +261,7 @@ const serializedData = JSON.stringify(lightboxData).replace(/</g, '\\u003c')
       if (original) {
         original.href = item.originalUrl
         const label = original.dataset.originalLabel ?? ''
-        original.setAttribute('aria-label', `${item.title} — ${label}`)
+        original.setAttribute('aria-label', `${item.title}: ${label}`)
       }
       if (prevButton) prevButton.disabled = activeItems.length < 2
       if (nextButton) nextButton.disabled = activeItems.length < 2

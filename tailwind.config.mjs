@@ -34,17 +34,6 @@ export default {
           '"Segoe UI"',
           'sans-serif',
         ],
-        serif: [
-          '"Iowan Old Style"',
-          '"Palatino Linotype"',
-          'Palatino',
-          'Georgia',
-          'serif',
-        ],
-      },
-      boxShadow: {
-        soft: '0 1px 2px rgb(0 0 0 / 0.03), 0 30px 60px -45px rgb(0 0 0 / 0.35)',
-        lift: '0 2px 4px rgb(0 0 0 / 0.04), 0 36px 70px -40px rgb(0 0 0 / 0.42)',
       },
       transitionTimingFunction: {
         out: 'cubic-bezier(0.22, 1, 0.36, 1)',

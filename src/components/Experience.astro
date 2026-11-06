@@ -18,7 +18,6 @@ const t = useTranslations(locale)
     <div class="lg:col-span-4">
       <div class="lg:sticky lg:top-28">
         <SectionHeading
-          eyebrow={t('experience.eyebrow')}
           description={t('experience.description')}
           split={false}
           class="max-w-md"
@@ -59,7 +58,7 @@ const t = useTranslations(locale)
                         class="link-arrow mt-3 text-muted"
                       >
                         {t('experience.visit')}
-                        <span class="sr-only">({item.company} — {t('work.openNewTab')})</span>
+                        <span class="sr-only">({item.company}: {t('work.openNewTab')})</span>
                         <ArrowUpRight class="size-3.5" />
                       </a>
                     )
